@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Smart_Calendar.Application</RootNamespace>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smart-Calendar.Persistence\Smart-Calendar.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
