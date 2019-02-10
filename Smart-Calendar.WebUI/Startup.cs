@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Smart_Calendar.Application.Repositories;
+using Smart_Calendar.Application.Services;
 using Smart_Calendar.Persistence;
 
 namespace Smart_Calendar.WebUI
@@ -24,8 +25,8 @@ namespace Smart_Calendar.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SmartCalendarDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("SmartCalendarDb")));
-            services.AddTransient(typeof(IBaseRepo<>), typeof(BaseRepo<>));
-
+            services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
+            services.AddScoped<IIdentityService, IdentityService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

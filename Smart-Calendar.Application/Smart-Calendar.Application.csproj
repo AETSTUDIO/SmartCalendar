@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Smart-Calendar.Persistence\Smart-Calendar.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
+
 </Project>
