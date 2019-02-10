@@ -18,14 +18,19 @@ namespace Smart_Calendar.WebUI.Controllers
             _IdentityService = IdentityService;
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(LoginDto credential)
         {
-            return Ok();
+            var result = await _IdentityService.LoginAsync(credential);
+            if (result.Code == System.Net.HttpStatusCode.Unauthorized)
+                return Unauthorized();
+
+            return Ok(new { jwtToken = result.Token });
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterDto regsiterDto)
         {
-            return Ok(await _IdentityService.CreateAccountAsync(regsiterDto));
+            var result = await _IdentityService.CreateAccountAsync(regsiterDto);
+            return Ok(new { jwtToken = result.Token });
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Smart_Calendar.Application.Services
     public interface IIdentityService
     {
         Task<TokenResponseDto> CreateAccountAsync(RegisterDto registerDto);
+        Task<TokenResponseDto> LoginAsync(LoginDto credential);
     }
 }
