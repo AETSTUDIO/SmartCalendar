@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,8 +7,12 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Smart_Calendar.Application.Helper.JWT;
 using Smart_Calendar.Application.Repositories;
+using Smart_Calendar.Application.Services;
 using Smart_Calendar.Persistence;
+using System.Text;
 
 namespace Smart_Calendar.WebUI
 {
@@ -23,10 +28,27 @@ namespace Smart_Calendar.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setting up sql connection
             services.AddDbContext<SmartCalendarDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("SmartCalendarDb")));
-            services.AddTransient(typeof(IBaseRepo<>), typeof(BaseRepo<>));
-
+            // DI registration
+            services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddTransient<IJWTHelper, JWTHelper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // JTW authentication setup
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["appToken"])),
+                    RequireSignedTokens = true,
+                    ValidateLifetime = true,
+                    ValidateIssuer = true,
+                    ValidIssuer = "http://localhost:44314/",
+                    ValidateAudience = false,
+                    SaveSigninToken = true
+                };
+            });
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -51,7 +73,7 @@ namespace Smart_Calendar.WebUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
