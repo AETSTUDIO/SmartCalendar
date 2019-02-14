@@ -1,6 +1,6 @@
 {
-  "short_name": "Smart_Calendar.WebUI",
-  "name": "Smart_Calendar.WebUI",
+  "short_name": "web",
+  "name": "web",
   "icons": [
     {
       "src": "favicon.ico",
