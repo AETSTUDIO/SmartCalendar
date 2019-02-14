@@ -27,7 +27,7 @@ namespace Smart_Calendar.WebUI.Controllers
         [HttpGet("User/{id}")]
         public async Task<IActionResult> GetUserListById(Guid id)
         {
-            return Ok(_userRepo.Get(d => d.UserId == new Guid("c45d233c-a3b4-42b1-a91a-0d044a35c0f2")));
+            return Ok( _userRepo.Get(d => d.UserId == new Guid("c45d233c-a3b4-42b1-a91a-0d044a35c0f2")));
         }
     }
 }
