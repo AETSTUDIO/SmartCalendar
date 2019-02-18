@@ -23,7 +23,7 @@ namespace Smart_Calendar.WebUI.Controllers
             _shiftRepo = shiftRepo;
             _accountRepo = accountRepo;
         }
-        
+
         [HttpGet("User")]
         public async Task<IActionResult> GetUserList()
         {
@@ -38,14 +38,14 @@ namespace Smart_Calendar.WebUI.Controllers
                 {
                     Shift shiftResult = _shiftRepo.Get(s => s.ShiftId == userShift.ShiftId).FirstOrDefault();
                     var shift = new ShiftVM { ShiftId = shiftResult.ShiftId, StartTime = shiftResult.StartTime, EndTime = shiftResult.EndTime };
-                    userShifts.Add(new UserShiftVM { UserShiftId = userShift.UserShiftId, Day = userShift.Day, ShiftId = userShift.ShiftId, Shift = shift});
+                    userShifts.Add(new UserShiftVM { UserShiftId = userShift.UserShiftId, Day = userShift.Day, ShiftId = userShift.ShiftId, Shift = shift });
                 }
-                userList.Add(new UserVM { Id = user.UserId, FirstName = user.FirstName, LastName = user.LastName, Gender = user.Gender, Department = user.Department.Name, Position = user.Position.Name, UserShifts=userShifts });
+                userList.Add(new UserVM { Id = user.UserId, FirstName = user.FirstName, LastName = user.LastName, Gender = user.Gender, Department = user.Department.Name, Position = user.Position.Name, UserShifts = userShifts });
             }
             return Ok(userList);
         }
 
-        
+
         [HttpGet("User/{id}")]
         public async Task<IActionResult> GetUserInfo(Guid id)
         {
@@ -57,13 +57,12 @@ namespace Smart_Calendar.WebUI.Controllers
             return Ok(user);
         }
 
-        
+
         [HttpDelete("User/{id}")]
         public async Task<IActionResult> DeleteUserInfo(Guid id)
         {
-            var user = _userRepo.Get(d => d.UserId == id).SingleOrDefault();
-            await _accountRepo.DeleteAsync(a => a.AccountId == user.AccountId);
-            //await _userShiftRepo.DeleteAsync(u => u.UserId == user.UserId);
+            //var user = _userRepo.Get(d => d.UserId == id).SingleOrDefault();
+            //await _accountRepo.DeleteAsync(a => a.AccountId == user.AccountId);
             return Ok(await _userRepo.DeleteAsync(d => d.UserId == id));
         }
     }
@@ -83,11 +82,10 @@ namespace Smart_Calendar.WebUI.Controllers
     {
         public int UserShiftId { get; set; }
         public int ShiftId { get; set; }
-        //public Guid UserId { get; set; }
         public int Day { get; set; }
 
         public ShiftVM Shift { get; set; }
-        
+
     }
 
     internal class ShiftVM
