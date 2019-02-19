@@ -9,10 +9,10 @@ const TableRow = props => {
       <Table.Cell>{props.user.firstName}</Table.Cell>
       <Table.Cell>{props.user.lastName}</Table.Cell>
       <Table.Cell>{props.user.gender}</Table.Cell>
-      <Table.Cell>{props.user.department.deptName}</Table.Cell>
-      <Table.Cell>{props.user.position.posName}</Table.Cell>
+      <Table.Cell>{props.user.department}</Table.Cell>
+      <Table.Cell>{props.user.position}</Table.Cell>
       <Table.Cell>
-        <Shift userShift={props.user.userShift} />
+              <Shift userShifts={props.user.userShifts} />
       </Table.Cell>
       <Table.Cell>
         <ButtonGroup>
