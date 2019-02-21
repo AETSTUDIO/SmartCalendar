@@ -27,7 +27,7 @@ namespace Smart_Calendar.WebUI.Controllers
         [HttpGet("User")]
         public async Task<IActionResult> GetUserList()
         {
-            var results = await _userRepo.GetAllAsync(c => c.Department, c => c.Position);
+            var results = await _userRepo.GetAllAsync(c => c.Department, c => c.Position );
 
             var userList = new List<UserVM>();
             foreach (var user in results)
@@ -40,7 +40,7 @@ namespace Smart_Calendar.WebUI.Controllers
                     var shift = new ShiftVM { ShiftId = shiftResult.ShiftId, StartTime = shiftResult.StartTime, EndTime = shiftResult.EndTime };
                     userShifts.Add(new UserShiftVM { UserShiftId = userShift.UserShiftId, Day = userShift.Day, ShiftId = userShift.ShiftId, Shift = shift });
                 }
-                userList.Add(new UserVM { Id = user.UserId, FirstName = user.FirstName, LastName = user.LastName, Gender = user.Gender, Department = user.Department.Name, Position = user.Position.Name, UserShifts = userShifts });
+                userList.Add(new UserVM { Id = user.UserId, AccountId = user.AccountId, FirstName = user.FirstName, LastName = user.LastName, Gender = user.Gender, Department = user.Department.Name, Position = user.Position.Name, UserShifts = userShifts });
             }
             return Ok(userList);
         }
@@ -57,19 +57,33 @@ namespace Smart_Calendar.WebUI.Controllers
             return Ok(user);
         }
 
+        [HttpPost("User")]
+        public async Task<IActionResult> AddUserInfo([FromBody]User user)
+        {
+           
+            await _userRepo.CreateAsync(user);
+            var usersInDb = await GetUserList(); 
+            return Ok(usersInDb);
+        }
 
         [HttpDelete("User/{id}")]
         public async Task<IActionResult> DeleteUserInfo(Guid id)
         {
-            //var user = _userRepo.Get(d => d.UserId == id).SingleOrDefault();
-            //await _accountRepo.DeleteAsync(a => a.AccountId == user.AccountId);
             return Ok(await _userRepo.DeleteAsync(d => d.UserId == id));
+        }
+
+        [HttpGet("Account")]
+        public async Task<IActionResult> GetUserAccountList()
+        {
+            var accounts = await _accountRepo.GetAllAsync();
+            return Ok(accounts);
         }
     }
 
-    internal class UserVM
+   public class UserVM
     {
         public Guid Id { get; set; }
+        public Guid AccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public char Gender { get; set; }
@@ -78,7 +92,7 @@ namespace Smart_Calendar.WebUI.Controllers
         public List<UserShiftVM> UserShifts { get; set; }
     }
 
-    internal class UserShiftVM
+    public class UserShiftVM
     {
         public int UserShiftId { get; set; }
         public int ShiftId { get; set; }
@@ -88,7 +102,7 @@ namespace Smart_Calendar.WebUI.Controllers
 
     }
 
-    internal class ShiftVM
+    public class ShiftVM
     {
         public int ShiftId { get; set; }
 

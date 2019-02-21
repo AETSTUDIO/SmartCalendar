@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, ButtonGroup } from "semantic-ui-react";
 import Shift from "../../Shift/Shift";
-import ModalUI from "../../UI/ModalUI"
+import ModalUI from "../../UI/ModalUI";
 
 const TableRow = props => {
   return (
@@ -19,7 +19,7 @@ const TableRow = props => {
           <ModalUI icon="edit" header="Edit Staff">
             <h3>Edit Staff</h3>
           </ModalUI>
-          <ModalUI icon="remove user" header="Delete Staff" deleteUser={props.deleteUser}>
+          <ModalUI icon="remove user" header="Delete Staff" deleteUser={props.deleteUserInfo}>
             <h3>Delete all information about {props.user.firstName} {props.user.lastName}?</h3>
           </ModalUI>
         </ButtonGroup>
