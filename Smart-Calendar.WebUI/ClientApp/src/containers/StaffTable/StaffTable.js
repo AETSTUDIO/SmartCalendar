@@ -1,11 +1,20 @@
 import React, { Component } from "react";
-import { Table, Loader } from "semantic-ui-react";
+import { Table, Loader, ButtonGroup } from "semantic-ui-react";
 import TableRow from "../../components/Table/TableRow/TableRow";
+import ModalUI from "../../components/UI/ModalUI";
+import AddShift from "../../components/Shift/AddShift/AddShift";
 import axios from "axios";
 
 class StaffTable extends Component {
     state = {
-        users: null
+        users: null,
+        accounts: null,
+        selectedAccountId: null,
+        firstName: "",
+        lastName: "",
+        selectedGender: "",
+        selectedDept: "",
+        selectedPos: ""
     };
 
     componentDidMount() {
@@ -17,23 +26,54 @@ class StaffTable extends Component {
             .catch(error => {
                 console.log(error);
             });
+
+        axios.get("https://localhost:44314/api/calendar/account")
+            .then(response => {
+                this.setState({ accounts: response.data });
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
-    deleteUser = id => {
+    onFormChange = (e, { name, value }) => {
+
+        this.setState({ [name]: value });
+    };
+
+    addUserInfo = () => {
+        const userInfo = {
+            accountId: this.state.selectedAccountId,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            gender: this.state.selectedGender,
+            departmentId: this.state.selectedDept,
+            positionId: this.state.selectedPos
+        };
+        axios.post("https://localhost:44314/api/calendar/user", userInfo).then(response => {
+            this.setState({ users: response.data.value });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    deleteUserInfo = id => {
         axios
             .delete("https://localhost:44314/api/calendar/user/" + id)
-          .then(response => {
-            let newUsers=this.state.users.filter(user => user.id !== id);
-            this.setState({ users: newUsers });
-          })
-          .catch(error => {
-            console.log(error);
-          });
+            .then(response => {
+                let newUsers = this.state.users.filter(user => user.id !== id);
+                this.setState({ users: newUsers });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
 
     render() {
         let table = <Loader active inline="centered" size="massive" />;
-        if (this.state.users) {
+
+        if (this.state.users && this.state.accounts) {
+            const availableAccounts = this.state.accounts.filter(account => this.state.users.every(user => user.accountId !== account.accountId));
+
             table = (
                 <Table celled striped size="large" color="grey">
                     <Table.Header>
@@ -57,7 +97,13 @@ class StaffTable extends Component {
                                 <h3>Shift Info</h3>
                             </Table.HeaderCell>
                             <Table.HeaderCell>
-                                <h3>Action</h3>
+                                <h3>Action
+                                   <ButtonGroup>
+                                        <ModalUI icon="add" header="Add User Info" addUserInfo={this.addUserInfo} >
+                                            <AddShift accounts={availableAccounts} onFormChange={this.onFormChange} />
+                                        </ModalUI>
+                                    </ButtonGroup>
+                                </h3>
                             </Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
@@ -67,11 +113,12 @@ class StaffTable extends Component {
                             <TableRow
                                 key={user.id}
                                 user={user}
-                                deleteUser={() => this.deleteUser(user.id)}
+                                deleteUserInfo={() => this.deleteUserInfo(user.id)}
                             />
                         ))}
                     </Table.Body>
 
+    }
                     {/* <Table.Footer>
             <Table.Row>
               <Table.HeaderCell>Total</Table.HeaderCell>
