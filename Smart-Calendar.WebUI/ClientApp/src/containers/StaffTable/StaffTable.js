@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Table, Loader, ButtonGroup } from "semantic-ui-react";
 import TableRow from "../../components/Table/TableRow/TableRow";
 import ModalUI from "../../components/UI/ModalUI";
-import AddShift from "../../components/Shift/AddShift/AddShift";
+import AddUserInfo from "../../components/UserInfo/AddUserInfo/AddUserInfo";
 import axios from "axios";
 
 class StaffTable extends Component {
@@ -14,7 +14,8 @@ class StaffTable extends Component {
         lastName: "",
         selectedGender: "",
         selectedDept: "",
-        selectedPos: ""
+        selectedPos: "",
+        showForm: false
     };
 
     componentDidMount() {
@@ -35,7 +36,7 @@ class StaffTable extends Component {
     }
 
     onFormChange = (e, { name, value }) => {
-
+        //console.log("Form is changed");
         this.setState({ [name]: value });
     };
 
@@ -99,7 +100,7 @@ class StaffTable extends Component {
                                 <h3>Action
                                    <ButtonGroup>
                                         <ModalUI icon="add" header="Add User Info" addUserInfo={this.addUserInfo} >
-                                            <AddShift accounts={availableAccounts} onFormChange={this.onFormChange} />
+                                            <AddUserInfo accounts={availableAccounts} onFormChange={this.onFormChange} />
                                         </ModalUI>
                                     </ButtonGroup>
                                 </h3>
@@ -110,9 +111,11 @@ class StaffTable extends Component {
                     <Table.Body>
                         {this.state.users.map(user => (
                             <TableRow
+                                showForm={this.state.showForm}
                                 key={user.id}
                                 user={user}
                                 deleteUserInfo={() => this.deleteUserInfo(user.id)}
+                                onFormChange={this.onFormChange}
                             />
                         ))}
                     </Table.Body>

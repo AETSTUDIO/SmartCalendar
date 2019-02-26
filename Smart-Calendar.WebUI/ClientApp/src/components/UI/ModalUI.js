@@ -10,7 +10,7 @@ class ModalUI extends Component {
 
     close = () => {
         this.setState({ open: false });
-        this.props.header === "Delete Staff" ? this.props.deleteUser() : null;
+        this.props.header === "Delete User Info" ? this.props.deleteUser() : null;
         this.props.header === "Add User Info" ? this.props.addUserInfo() : null;
     };
 
@@ -44,7 +44,7 @@ class ModalUI extends Component {
                     <Modal.Actions>
                         <Button onClick={this.cancel} negative>
                             Cancel
-            </Button>
+                        </Button>
                         <Button
                             positive
                             icon="checkmark"

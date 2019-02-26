@@ -3,73 +3,42 @@ import { Form, Select, Input } from "semantic-ui-react";
 
 
 const AddShift = props => {
-    const genderOptions = [
-        { key: 'm', text: 'Male', value: 'm' },
-        { key: 'f', text: 'Female', value: 'f' }
+    const shiftOptions = [
+        { key: '1', text: '8:00am - 4:00pm', value: '1' },
+        { key: '2', text: '9:00am - 5:00pm', value: '2' },
+        { key: '3', text: '10:00am - 6:00pm', value: '3' }
     ];
-    const deptOptions = [
-        { key: 'it', text: 'IT', value: '1' },
-        { key: 'marketing', text: 'Marketing', value: '2' },
-        { key: 'accounting', text: 'Accounting', value: '3' }
+    const dayOptions = [
+        { key: '1', text: 'Monday', value: 'Monday' },
+        { key: '2', text: 'Tuesday', value: 'Tuesday' },
+        { key: '3', text: 'Wednesday', value: 'Wednesday' },
+        { key: '3', text: 'Thursday', value: 'Thursday' },
+        { key: '3', text: 'Friday', value: '5' },
     ];
-    const posOptions = [
-        { key: 'manager', text: 'Manager', value: '1' },
-        { key: 'lead', text: 'Lead', value: '2' },
-        { key: 'member', text: 'Member', value: '3' }
-    ];
+
     return (
         <div>
             <Form>
                 <Form.Group widths="equal">
                     <Form.Field
                         control={Select}
-                        name="selectedAccountId"
-                        label="Staff Email"
-                        options={props.accounts.map(acc => ({ key: acc.accountId, text: acc.email, value: acc.accountId }))}
-                        placeholder="Select a staff"
+                        name="selectedDay"
+                        label="Available Day"
+                        options={dayOptions}
+                        placeholder="Select Available Day"
                         onChange={props.onFormChange}
                     />
                     <Form.Field
-                        control={Input}
-                        name="firstName"
-                        label="First name"
-                        placeholder="First Name"
-                        onChange={props.onFormChange}
-                    />
-                    <Form.Field
-                        control={Input}
-                        name="lastName"
-                        label="Last name"
-                        placeholder="Last Name"
+                        control={Select}
+                        name="selectedShift"
+                        label="Available Shift"
+                        options={shiftOptions}
+                        placeholder="Select Available Shift"
                         onChange={props.onFormChange}
                     />
                 </Form.Group>
-                <Form.Group widths="equal">
-                    <Form.Field
-                        control={Select}
-                        name="selectedGender"
-                        label="Gender"
-                        options={genderOptions}
-                        placeholder="Gender"
-                        onChange={props.onFormChange}
-                    />
-                    <Form.Field
-                        control={Select}
-                        name="selectedDept"
-                        label="Department"
-                        options={deptOptions}
-                        placeholder="Department Name"
-                        onChange={props.onFormChange}
-                    />
-                    <Form.Field
-                        control={Select}
-                        name="selectedPos"
-                        label="Position"
-                        options={posOptions}
-                        placeholder="Position Name"
-                        onChange={props.onFormChange}
-                    />
-                </Form.Group>
+                
+                
                 
             </Form>
         </div>
