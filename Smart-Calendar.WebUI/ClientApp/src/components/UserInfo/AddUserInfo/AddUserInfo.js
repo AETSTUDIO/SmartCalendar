@@ -8,14 +8,14 @@ const AddUserInfo = props => {
         { key: 'f', text: 'Female', value: 'f' }
     ];
     const deptOptions = [
-        { key: 'it', text: 'IT', value: '1' },
-        { key: 'marketing', text: 'Marketing', value: '2' },
-        { key: 'accounting', text: 'Accounting', value: '3' }
+        { key: 'it', text: 'IT', value: 1 },
+        { key: 'marketing', text: 'Marketing', value: 2 },
+        { key: 'accounting', text: 'Accounting', value: 3 }
     ];
     const posOptions = [
-        { key: 'manager', text: 'Manager', value: '1' },
-        { key: 'lead', text: 'Lead', value: '2' },
-        { key: 'member', text: 'Member', value: '3' }
+        { key: 'manager', text: 'Manager', value: 1 },
+        { key: 'lead', text: 'Lead', value: 2 },
+        { key: 'member', text: 'Member', value: 3 }
     ];
     return (
         <div>

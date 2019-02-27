@@ -27,10 +27,10 @@ namespace Smart_Calendar.WebUI.Controllers
         [HttpGet("User")]
         public async Task<IActionResult> GetUserList()
         {
-            var results = await _userRepo.GetAllAsync(c => c.Department, c => c.Position , c => c.Account, c => c.UserShift);
+            var results = await _userRepo.GetAllAsync(c => c.Department, c => c.Position, c => c.Account, c => c.UserShift);
 
             var userList = new List<UserVM>();
-            var newuserList = new List<UserVM>();
+
             foreach (var user in results)
             {
                 var userShiftResults = _userShiftRepo.Get(u => u.UserId == user.UserId);
@@ -41,15 +41,19 @@ namespace Smart_Calendar.WebUI.Controllers
                     var shift = new ShiftVM { ShiftId = shiftResult.ShiftId, TimeSlot = shiftResult.TimeSlot };
                     userShifts.Add(new UserShiftVM { UserShiftId = userShift.UserShiftId, Day = userShift.Day, ShiftId = userShift.ShiftId, Shift = shift });
                 }
-                userList.Add(new UserVM {
+                userList.Add(new UserVM
+                {
                     Id = user.UserId,
                     AccountId = user.AccountId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Gender = user.Gender,
+                    DepartmentId = user.DepartmentId,
                     Department = user.Department.Name,
+                    PositionId = user.PositionId,
                     Position = user.Position.Name,
-                    UserShifts = userShifts });
+                    UserShifts = userShifts
+                });
             }
             return Ok(userList);
         }
@@ -69,10 +73,16 @@ namespace Smart_Calendar.WebUI.Controllers
         [HttpPost("User")]
         public async Task<IActionResult> AddUserInfo([FromBody]User user)
         {
-           
+
             await _userRepo.CreateAsync(user);
-            var usersInDb = await GetUserList(); 
+            var usersInDb = await GetUserList();
             return Ok(usersInDb);
+        }
+
+        [HttpPut("User/{id}")]
+        public async Task<IActionResult> UpdateUserInfo([FromBody]User user)
+        {
+            return Ok(await _userRepo.UpdateAsync(user));
         }
 
         [HttpDelete("User/{id}")]
@@ -87,16 +97,38 @@ namespace Smart_Calendar.WebUI.Controllers
             var accounts = await _accountRepo.GetAllAsync();
             return Ok(accounts);
         }
+
+        [HttpPost("UserShift")]
+        public async Task<IActionResult> AddUserShift([FromBody]UserShift userShift)
+        {
+            await _userShiftRepo.CreateAsync(userShift);
+            
+            return Ok(userShift.UserShiftId);
+        }
+
+        [HttpDelete("UserShift/{id}")]
+        public async Task<IActionResult> DeleteUserShift(int id)
+        {
+            return Ok(await _userShiftRepo.DeleteAsync(d => d.UserShiftId == id));
+        }
+
+        [HttpPut("UserShift/{id}")]
+        public async Task<IActionResult> UpdateUserShift([FromBody]UserShift userShift)
+        {
+            return Ok(await _userShiftRepo.UpdateAsync(userShift));
+        }
     }
 
-   public class UserVM
+    public class UserVM
     {
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Gender { get; set; }
+        public int DepartmentId { get; set; }
         public string Department { get; set; }
+        public int PositionId { get; set; }
         public string Position { get; set; }
         public List<UserShiftVM> UserShifts { get; set; }
     }
@@ -117,7 +149,7 @@ namespace Smart_Calendar.WebUI.Controllers
 
         public string TimeSlot { get; set; }
 
-        
+
     }
 
 }

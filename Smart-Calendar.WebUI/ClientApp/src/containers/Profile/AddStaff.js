@@ -17,12 +17,12 @@ class AddStaff extends Component {
                     <Form.Group widths="equal">
                         <Form.Field
                             control={Input}
-                            label="First name"
+                            label="First Name"
                             placeholder="First Name"
                         />
                         <Form.Field
                             control={Input}
-                            label="Last name"
+                            label="Last Name"
                             placeholder="Last Name"
                         />
                         <Form.Field

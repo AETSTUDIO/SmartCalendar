@@ -13,12 +13,12 @@ const TableRow = props => {
             <Table.Cell>{props.user.department}</Table.Cell>
             <Table.Cell>{props.user.position}</Table.Cell>
             <Table.Cell>
-                <Shift userShifts={props.user.userShifts} />
+                <Shift userShifts={props.user.userShifts} editable={false}/>
             </Table.Cell>
             <Table.Cell>
                 <ButtonGroup>
                     <ModalUI icon="edit" header="Edit User Info">
-                        <EditUserInfo user={props.user} onFormChange={props.onFormChange}/>
+                        <EditUserInfo user={props.user} getUpdatedUser={props.getUpdatedUser}/>
                     </ModalUI>
                     <ModalUI icon="remove user" header="Delete User Info" deleteUser={props.deleteUserInfo}>
                         <h3>Delete all information about {props.user.firstName} {props.user.lastName}?</h3>

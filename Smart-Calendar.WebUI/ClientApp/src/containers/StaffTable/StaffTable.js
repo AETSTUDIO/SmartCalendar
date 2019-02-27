@@ -15,7 +15,7 @@ class StaffTable extends Component {
         selectedGender: "",
         selectedDept: "",
         selectedPos: "",
-        showForm: false
+        updatedUser: null
     };
 
     componentDidMount() {
@@ -68,6 +68,9 @@ class StaffTable extends Component {
             });
     };
 
+    getUpdatedUser = (updatedUser) => {
+        this.setState({ updatedUser: updatedUser }, () => console.log(this.state.updatedUser));
+    }
     render() {
         let table = <Loader active inline="centered" size="massive" />;
 
@@ -116,6 +119,7 @@ class StaffTable extends Component {
                                 user={user}
                                 deleteUserInfo={() => this.deleteUserInfo(user.id)}
                                 onFormChange={this.onFormChange}
+                                getUpdatedUser={this.getUpdatedUser}
                             />
                         ))}
                     </Table.Body>
