@@ -5,11 +5,23 @@ import Shift from "../../Shift/Shift";
 
 class EditUserInfo extends Component {
     state = {
+        userId: this.props.user.id,
+        accountId: this.props.user.accountId,
         firstName: this.props.user.firstName,
         lastName: this.props.user.lastName,
-        departmentId: "",
-        positionId: "",
+        gender: this.props.user.gender,
+        departmentId: this.props.user.departmentId,
+        positionId: this.props.user.positionId,
         userShifts: this.props.user.userShifts
+    }
+
+    addShift = (newShift) => {
+        this.setState({ userShifts: [...this.state.userShifts, newShift] }, () => this.props.getUpdatedUser(this.state));
+    }
+
+    removeShift = (day) => {
+        let newShifts = this.state.userShifts.filter(shift => shift.day !== day);
+        this.setState({ userShifts: newShifts }, () => this.props.getUpdatedUser(this.state));
     }
 
     onFormChange = (e, { name, value }) => {
@@ -54,7 +66,7 @@ class EditUserInfo extends Component {
                             name="departmentId"
                             label="Department"
                             options={deptOptions}
-                            defaultValue={this.props.user.departmentId}
+                            defaultValue={this.state.departmentId}
                             onChange={this.onFormChange}
                         />
                         <Form.Field
@@ -62,12 +74,12 @@ class EditUserInfo extends Component {
                             name="positionId"
                             label="Position"
                             options={posOptions}
-                            defaultValue={this.props.user.positionId}
+                            defaultValue={this.state.positionId}
                             onChange={this.onFormChange}
                         />
                     </Form.Group>
                     <h4>User Shifts</h4>
-                    <Shift userShifts={this.state.userShifts} editable={true}/>
+                    <Shift editable userId={this.props.user.id} userShifts={this.state.userShifts} addShift={this.addShift} removeShift={this.removeShift}/>
                 </Form>
             </div>
         );

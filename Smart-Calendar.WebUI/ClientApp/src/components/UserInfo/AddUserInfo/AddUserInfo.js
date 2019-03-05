@@ -24,9 +24,9 @@ const AddUserInfo = props => {
                     <Form.Field
                         control={Select}
                         name="selectedAccountId"
-                        label="Staff Email"
+                        label="Staff Email Account"
                         options={props.accounts.map(acc => ({ key: acc.accountId, text: acc.email, value: acc.accountId }))}
-                        placeholder="Select a staff"
+                        placeholder="Select an Account"
                         onChange={props.onFormChange}
                     />
                     <Form.Field

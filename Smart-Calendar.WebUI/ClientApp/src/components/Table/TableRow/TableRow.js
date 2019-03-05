@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, ButtonGroup } from "semantic-ui-react";
-import Shift from "../../Shift/Shift";
 import ModalUI from "../../UI/ModalUI";
+import Shift from "../../Shift/Shift";
 import EditUserInfo from "../../UserInfo/EditUserInfo/EditUserInfo";
 
 const TableRow = props => {
@@ -13,11 +13,11 @@ const TableRow = props => {
             <Table.Cell>{props.user.department}</Table.Cell>
             <Table.Cell>{props.user.position}</Table.Cell>
             <Table.Cell>
-                <Shift userShifts={props.user.userShifts} editable={false}/>
+                <Shift editable={false} userShifts={props.user.userShifts}/>
             </Table.Cell>
             <Table.Cell>
                 <ButtonGroup>
-                    <ModalUI icon="edit" header="Edit User Info">
+                    <ModalUI icon="edit" header="Edit User Info" editUserInfo={props.editUserInfo}>
                         <EditUserInfo user={props.user} getUpdatedUser={props.getUpdatedUser}/>
                     </ModalUI>
                     <ModalUI icon="remove user" header="Delete User Info" deleteUser={props.deleteUserInfo}>

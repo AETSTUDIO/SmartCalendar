@@ -36,7 +36,6 @@ class StaffTable extends Component {
     }
 
     onFormChange = (e, { name, value }) => {
-        //console.log("Form is changed");
         this.setState({ [name]: value });
     };
 
@@ -69,8 +68,33 @@ class StaffTable extends Component {
     };
 
     getUpdatedUser = (updatedUser) => {
-        this.setState({ updatedUser: updatedUser }, () => console.log(this.state.updatedUser));
+        this.setState({ updatedUser: updatedUser });
     }
+
+    editUserInfo = (updatedUser) => {
+        axios
+            .put("https://localhost:44314/api/calendar/user/" + updatedUser.userId, updatedUser)
+            .then(response => {
+                this.setState({ users: response.data.value });
+            }).catch(error => {
+                console.log(error);
+            });
+
+        axios
+            .delete("https://localhost:44314/api/calendar/userShifts/" + updatedUser.userId)
+            .then(response => {
+                axios.post("https://localhost:44314/api/calendar/userShifts/" + updatedUser.userId, updatedUser.userShifts)
+                    .then(response => {
+                    //console.log(response.data.value);
+                    this.setState({ users: response.data.value });
+                }).catch(error => {
+                    console.log(error);
+                });
+            }).catch(error => {
+                console.log(error);
+            });
+    }
+
     render() {
         let table = <Loader active inline="centered" size="massive" />;
 
@@ -120,6 +144,7 @@ class StaffTable extends Component {
                                 deleteUserInfo={() => this.deleteUserInfo(user.id)}
                                 onFormChange={this.onFormChange}
                                 getUpdatedUser={this.getUpdatedUser}
+                                editUserInfo={() => this.editUserInfo(this.state.updatedUser)}
                             />
                         ))}
                     </Table.Body>

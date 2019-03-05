@@ -15,6 +15,8 @@ class ModalUI extends Component {
                 return this.props.deleteUser();
             case "Add User Info":
                 return this.props.addUserInfo();
+            case "Edit User Info":
+                return this.props.editUserInfo();
             default:
                 return null;
         }
