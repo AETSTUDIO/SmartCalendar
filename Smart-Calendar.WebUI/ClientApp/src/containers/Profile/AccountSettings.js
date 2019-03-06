@@ -1,7 +1,26 @@
-import React, { Component } from "react";
+import React, { Component
+} from "react";
 import { Form, Input, Select } from "semantic-ui-react";
 
+const roles = [
+    { key: 'a', text: 'Admin', value: '1'},
+    { key: 'm', text: 'Member', value: '2' }
+]
 class AccountSettings extends Component {
+
+    state = {
+        email: '',
+        password: '',
+        role: '',
+        phoneNumber:''
+    }
+    
+    handleAccountInfo = (e, {name,value}) => {
+        this.setState({
+            [name]:value
+        }, () => { console.log(this.state);});
+    }
+   
   render() {
     return (
       <div>
@@ -18,21 +37,37 @@ class AccountSettings extends Component {
               placeholder="Last Name"
             />
             <Form.Field
-              control={Input}
-              label="Password"
-              placeholder="Password"
+                control={Select}
+                name= "role"
+                label="Role"
+                placeholder="Select Role"
+                options={roles}
+                onChange={this.handleAccountInfo}
             />
           </Form.Group>
           <Form.Group widths="equal">
             <Form.Field
-              control={Input}
-              label="Email"
-              placeholder="Email"
+                control={Input}
+                type='email'
+                label="Email"
+                placeholder="Email"
+                name="email"
+                onChange={this.handleAccountInfo}
             />
             <Form.Field
-              control={Input}
-              label="Phone Number"
-              placeholder="Phone Number"
+                control={Input}
+                type='password'
+                label="Password"
+                name="password"
+                placeholder="Password"
+                onChange={this.handleAccountInfo}
+            />
+            <Form.Field
+                control={Input}
+                label="Phone Number"
+                name="phoneNumber"
+                placeholder="Phone Number"
+                onChange={this.handleAccountInfo}
             />
           </Form.Group>
         </Form>
