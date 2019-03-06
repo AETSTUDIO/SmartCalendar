@@ -9,21 +9,29 @@ class ModalUI extends Component {
     };
 
     close = () => {
-        this.setState({ open: false });
-        switch (this.props.header) {
-            case "Delete User Info":
-                return this.props.deleteUser();
-            case "Add User Info":
-                return this.props.addUserInfo();
-            case "Edit User Info":
-                return this.props.editUserInfo();
-            default:
-                return null;
-        }
+        console.log(this.props.formvalid);
+        this.props.header === 'Create New Account' ? this.props.validateForm() : null;
         
+        if (this.props.formvalid) { 
+            //this.setState({ open: false });
+
+            switch (this.props.header) {
+                case "Delete Staff":
+                    return this.props.deleteUser();
+                case "Add User Info":
+                    return this.props.addUserInfo();
+                case "Create New Account":
+                    return this.props.addStaffInfo();
+                default:
+                    return null;
+            }
+            this.setState({ open: false });
+        }
+
     };
 
     cancel = () => {
+        this.props.header === 'Create New Account' ? this.props.clearStaffInfo() : null;
         this.setState({ open: false });
     };
 
@@ -35,8 +43,7 @@ class ModalUI extends Component {
                 <Button
                     basic
                     icon={this.props.icon}
-                    onClick={this.closeConfigShow(false, false)}
-                >
+                    onClick={this.closeConfigShow(false, false)}>
                     {this.props.category}
                 </Button>
 
@@ -44,23 +51,20 @@ class ModalUI extends Component {
                     open={open}
                     closeOnEscape={closeOnEscape}
                     closeOnDimmerClick={closeOnDimmerClick}
-                    onClose={this.close}
-                >
+                    onClose={this.close}>
                     <Modal.Header>{this.props.header}</Modal.Header>
                     <Modal.Content>
                         <Modal.Description>{this.props.children}</Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={this.cancel} negative>
-                            Cancel
-                        </Button>
+                        Cancel</Button> 
                         <Button
-                            positive
-                            icon="checkmark"
-                            labelPosition="right"
-                            content="Confirm"
-                            onClick={this.close}
-                        />
+                        positive
+                        icon="checkmark"
+                        labelPosition="right"
+                        content="Confirm"
+                        onClick={this.close}/>
                     </Modal.Actions>
                 </Modal>
             </React.Fragment>

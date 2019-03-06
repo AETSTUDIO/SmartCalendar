@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Smart_Calendar.Application.Repositories;
 using Smart_Calendar.Application.Dtos;
 using Smart_Calendar.Domain.Entities;
@@ -30,7 +31,9 @@ namespace Smart_Calendar.WebUI.Controllers
         [HttpGet("User")]
         public async Task<IActionResult> GetUserList()
         {
+
             var results = await _userRepo.GetAllAsync(c => c.Department, c => c.Position, c => c.Account, c => c.UserShift);
+
 
             var userList = new List<UserVM>();
 
@@ -79,6 +82,7 @@ namespace Smart_Calendar.WebUI.Controllers
 
             await _userRepo.CreateAsync(user);
             var usersInDb = await GetUserList();
+
             return Ok(usersInDb);
         }
 
@@ -87,6 +91,7 @@ namespace Smart_Calendar.WebUI.Controllers
         {
             await _userRepo.UpdateAsync(user);
             var usersInDb = await GetUserList();
+
             return Ok(usersInDb);
         }
 

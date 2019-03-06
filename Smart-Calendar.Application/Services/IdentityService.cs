@@ -30,7 +30,8 @@ namespace Smart_Calendar.Application.Services
             await _accountRepo.CreateAsync(account);
             return new TokenResponseDto
             {
-                Token = _jwtHelper.GenerateToken(registerDto.Email)
+                Token = _jwtHelper.GenerateToken(registerDto.Email),
+                Code = System.Net.HttpStatusCode.OK
             };
         }
         public async Task<TokenResponseDto> LoginAsync(LoginDto credential)
@@ -46,7 +47,7 @@ namespace Smart_Calendar.Application.Services
                 return new TokenResponseDto { Code = System.Net.HttpStatusCode.Unauthorized };
             }
 
-            return new TokenResponseDto { Token = _jwtHelper.GenerateToken(credential.Email) };
+            return new TokenResponseDto { Token = _jwtHelper.GenerateToken(credential.Email) , Code = System.Net.HttpStatusCode.OK};
         }
         private bool VerifyPasswordHash(byte[] hash, byte[] salt, string password)
         {
