@@ -11,12 +11,6 @@ import axios from "axios";
 
 
 export default class Menubar extends Component {
-    handleItemClick = () => { };
-
-
-  handleChange = e => {
-    e.preventDefault();
-    };
     state = {
         email: '',
         password: '',
@@ -24,42 +18,50 @@ export default class Menubar extends Component {
         emailerror: '',
         pwderror: '',
         roleerror: '',
-        formvalid:false
+        formvalid: false
     }
+
+    handleItemClick = () => { };
+
+
+    handleChange = e => {
+        e.preventDefault();
+    };
+
 
     handleFormChange = (e, { name, value }) => {
         this.setState({ [name]: value }, () => { console.log(this.state); });
     }
 
     addStaffInfo = (e) => {
-       // e.preventDefault();
- 
-            let userInfo = {
-                email: this.state.email,
-                password: this.state.password,
-                roleId: this.state.role
+        // e.preventDefault();
+
+        let userInfo = {
+            email: this.state.email,
+            password: this.state.password,
+            roleId: this.state.role
+        };
+        console.log(userInfo.email);
+        axios({
+            method: 'post',
+            url: 'https://localhost:44314/api/Account/Register',
+            data: userInfo
+        }).then(function (res) {
+
+            if (res.status === 200) {
+                alert('Account Created');
             }
-            console.log(userInfo.email);
-            axios({
-                method: 'post',
-                url: 'https://localhost:44314/api/Account/Register',
-                data: userInfo
-            }).then(function (res) {
-  
-                if (res.status == 200) {
-                  alert('Account Created');
-                }
-                else {
-                  alert('Account already Exists');
-                }
-               // debugger
-                this.setState({
-                    email: '',
-                    password: '',
-                    role: ''
-                });
-            }.bind(this));
-            //console.log("Staff info is added");
+            else {
+                alert('Account already Exists');
+            }
+            // debugger
+            this.setState({
+                email: '',
+                password: '',
+                role: ''
+            });
+        }.bind(this));
+        //console.log("Staff info is added");
     }
     clearStaffInfo = () => {
         this.setState({
@@ -69,7 +71,7 @@ export default class Menubar extends Component {
             emailerror: '',
             pwderror: '',
             roleerror: '',
-            formvalid:true
+            formvalid: true
         });
     }
 
@@ -83,7 +85,7 @@ export default class Menubar extends Component {
         error = '';
         perror = '';
         rolemsg = '';
-        
+
         if (!this.state.email) {
             emailflg = false;
             error = 'Please Enter Valid Email-ID';
@@ -104,16 +106,16 @@ export default class Menubar extends Component {
             rolemsg = 'Please Select Role';
         }
         if (emailflg && pwdflg && roleflg) { formisvalid = true; }
-        else { formisvalid = false;}
+        else { formisvalid = false; }
         this.setState({
             emailerror: error,
             pwderror: perror,
             roleerror: rolemsg,
             formvalid: formisvalid
         });
-       // console.log(this.state.formvalid);
-       // console.log(formisvalid);
-    }    
+        // console.log(this.state.formvalid);
+        // console.log(formisvalid);
+    }
 
     render() {
         const today = moment().format("DD MMMM YYYY, dddd");
@@ -125,9 +127,9 @@ export default class Menubar extends Component {
                         <Icon name="calendar alternate outline" />
                         <Header.Content>
                             Smart Calendar
-              <Header.Subheader>
+                            <Header.Subheader>
                                 The Next Generation HR Management System
-              </Header.Subheader>
+                            </Header.Subheader>
                         </Header.Content>
                     </Header>
                 </Menu.Item>
@@ -148,44 +150,44 @@ export default class Menubar extends Component {
                         </Menu.Item>
 
 
-            <Menu.Item>
-              <Button.Group>
-               <ModalUI icon="add user" header="Create New Account"
-                    addStaffInfo={this.addStaffInfo}
-                    validateForm={this.validateForm}
-                    clearStaffInfo={this.clearStaffInfo}
-                    formvalid={this.state.formvalid}>
-                <AddStaff onFormChange={this.handleFormChange}
-                emailerror={this.state.emailerror}
-                pwderror={this.state.pwderror}
-                roleerror={this.state.roleerror} />
-                </ModalUI>
-                <ModalUI icon="bell outline" header="Leave Request List">
-                  <LeaveRequests />
-                </ModalUI>
-                <DropdownUI
-                  icon="settings"
-                  headerIcon="user"
-                  content="Staff Name"
-                >
-                  <Button.Group vertical>
-                    <ModalUI header="Personal Profile" category="Profile">
-                      <EditProfile />
-                    </ModalUI>
-                    <ModalUI header="Account Settings" category="Account">
-                      <AccountSettings />
-                    </ModalUI>
-                    <ModalUI header="Signout Confirmation" category="Sign out">
-                      <h3>Do you want to sign out?</h3>
-                    </ModalUI>
-                  </Button.Group>
-                </DropdownUI>
-              </Button.Group>
-            </Menu.Item>
-          </Menu>
-        </Menu.Item>
-      </Menu>
-    );
-  }
+                        <Menu.Item>
+                            <Button.Group>
+                                <ModalUI icon="add user" header="Create New Account"
+                                    addStaffInfo={this.addStaffInfo}
+                                    validateForm={this.validateForm}
+                                    clearStaffInfo={this.clearStaffInfo}
+                                    formvalid={this.state.formvalid}>
+                                    <AddStaff onFormChange={this.handleFormChange}
+                                        emailerror={this.state.emailerror}
+                                        pwderror={this.state.pwderror}
+                                        roleerror={this.state.roleerror} />
+                                </ModalUI>
+                                <ModalUI icon="bell outline" header="Leave Request List">
+                                    <LeaveRequests />
+                                </ModalUI>
+                                <DropdownUI
+                                    icon="settings"
+                                    headerIcon="user"
+                                    content="Staff Name"
+                                >
+                                    <Button.Group vertical>
+                                        <ModalUI header="Personal Profile" category="Profile">
+                                            <EditProfile />
+                                        </ModalUI>
+                                        <ModalUI header="Account Settings" category="Account">
+                                            <AccountSettings />
+                                        </ModalUI>
+                                        <ModalUI header="Signout Confirmation" category="Sign out">
+                                            <h3>Do you want to sign out?</h3>
+                                        </ModalUI>
+                                    </Button.Group>
+                                </DropdownUI>
+                            </Button.Group>
+                        </Menu.Item>
+                    </Menu>
+                </Menu.Item>
+            </Menu>
+        );
+    }
 
 }

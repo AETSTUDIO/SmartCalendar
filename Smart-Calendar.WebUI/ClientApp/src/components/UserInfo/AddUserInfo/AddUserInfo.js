@@ -4,8 +4,8 @@ import { Form, Select, Input } from "semantic-ui-react";
 
 const AddUserInfo = props => {
     const genderOptions = [
-        { key: 'm', text: 'Male', value: 'm' },
-        { key: 'f', text: 'Female', value: 'f' }
+        { key: 'm', text: 'Male', value: 'Male' },
+        { key: 'f', text: 'Female', value: 'Female' }
     ];
     const deptOptions = [
         { key: 'it', text: 'IT', value: 1 },

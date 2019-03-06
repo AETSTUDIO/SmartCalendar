@@ -86,6 +86,7 @@ namespace Smart_Calendar.WebUI.Controllers
         public async Task<IActionResult> UpdateUserInfo([FromBody]User user)
         {
             await _userRepo.UpdateAsync(user);
+           
             var usersInDb = await GetUserList();
             return Ok(usersInDb);
         }
