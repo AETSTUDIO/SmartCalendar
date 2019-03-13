@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { Form, Select, Input } from "semantic-ui-react";
+import { Form, Select, Input, Message } from "semantic-ui-react";
 import Shift from "../../Shift/Shift";
 
 
@@ -42,7 +42,7 @@ class EditUserInfo extends Component {
         return (
             
             <div>
-                
+                {this.props.showFormNotice && <Message negative>Please check the form and try again</Message>}
                 <Form>
                     <Form.Group widths="equal">
                         <Form.Field
@@ -59,6 +59,14 @@ class EditUserInfo extends Component {
                             value={this.state.lastName}
                             onChange={this.onFormChange}
                         />
+                    </Form.Group>
+                    <Form.Group widths="equal">
+                        <Form.Field>
+                            {!this.state.firstName && <Message size="small" negative>Please enter first name</Message>}
+                        </Form.Field>
+                        <Form.Field>
+                            {!this.state.lastName && <Message size="small" negative>Please enter last name</Message>}
+                        </Form.Field>
                     </Form.Group>
                     <Form.Group widths="equal">
                         <Form.Field
