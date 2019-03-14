@@ -141,7 +141,7 @@ class StaffTable extends Component {
                                 {isDisplay && <Table.HeaderCell>
                                     <h3>Action
                                    <ButtonGroup>
-                                            <ModalUI basic inverted={false} icon="add" header="Add User Info" addUserInfo={this.addUserInfo} formvalid={addUserValid} showNotice={this.showNotice}>
+                                            <ModalUI basic icon="add" header="Add User Info" addUserInfo={this.addUserInfo} formvalid={addUserValid} showNotice={this.showNotice}>
                                                 <AddUserInfo accounts={availableAccounts} onFormChange={this.onFormChange} formControls={this.state} showFormNotice={this.state.showFormNotice} />
                                             </ModalUI>
                                         </ButtonGroup>

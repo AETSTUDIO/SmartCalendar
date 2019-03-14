@@ -130,6 +130,7 @@ class Menubar extends Component {
                     <Menu.Item position="right" style={{ "letterSpacing": "0.2em" }}>
                         THE NEXT GENERATION EMPLOYEE MANAGEMENT SYSTEM
                     </Menu.Item>
+
                 </Menu>
 
                 <Menu inverted size="tiny" borderless>
@@ -147,44 +148,43 @@ class Menubar extends Component {
                         />
                     </Menu.Item>
                     <Menu.Item>
-                        <Button.Group>
-                            {isDisplay && <ModalUI basic={false} icon="add user" header="Create New Account"
-                                addStaffInfo={this.addStaffInfo}
-                                validateForm={this.validateForm}
-                                clearStaffInfo={this.clearStaffInfo}
-                                formvalid={this.state.formvalid}>
-                                <AddStaff onFormChange={this.handleFormChange}
-                                    emailerror={this.state.emailerror}
-                                    pwderror={this.state.pwderror}
-                                    roleerror={this.state.roleerror} />
-                            </ModalUI>
-                            }
-                            <ModalUI basic={false} icon="bell" header="Leave Request List">
-                                <LeaveRequests />
-                            </ModalUI>
+                        {isDisplay && <ModalUI icon="add user" circular inverted header="Create New Account"
+                            addStaffInfo={this.addStaffInfo}
+                            validateForm={this.validateForm}
+                            clearStaffInfo={this.clearStaffInfo}
+                            formvalid={this.state.formvalid}>
+                            <AddStaff onFormChange={this.handleFormChange}
+                                emailerror={this.state.emailerror}
+                                pwderror={this.state.pwderror}
+                                roleerror={this.state.roleerror} />
+                        </ModalUI>
+                        }
 
-                            <Dropdown icon="settings" floating button className="icon">
-                                <Dropdown.Menu style={{ left: "auto", right: 0 }}>
-                                    <Dropdown.Header icon="user" content={this.props.accountEmail} />
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item>
-                                        <ModalUI trigger="category" header="Personal Profile" category="Profile">
-                                            <EditProfile />
-                                        </ModalUI>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item>
-                                        <ModalUI trigger="category" header="Account Settings" category="Account">
-                                            <AccountSettings />
-                                        </ModalUI>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item>
-                                        <ModalUI trigger="category" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} formvalid>
-                                            <h3>Do you want to sign out?</h3>
-                                        </ModalUI>
-                                    </Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Button.Group>
+                        <ModalUI icon="bell" inverted circular header="Leave Request List">
+                            <LeaveRequests />
+                        </ModalUI>
+
+                        <Dropdown trigger={<Button icon="settings" inverted circular size="tiny" />} floating icon={null}>
+                            <Dropdown.Menu style={{ left: "auto", right: 0, fontSize: "1.3em" }}>
+                                <Dropdown.Header icon="user" content={this.props.accountEmail} />
+                                <Dropdown.Divider />
+                                <Dropdown.Item>
+                                    <ModalUI trigger="category" header="Personal Profile" category="Profile">
+                                        <EditProfile />
+                                    </ModalUI>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <ModalUI trigger="category" header="Account Settings" category="Account">
+                                        <AccountSettings />
+                                    </ModalUI>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <ModalUI trigger="category" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} formvalid>
+                                        <h3>Do you want to sign out?</h3>
+                                    </ModalUI>
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Menu.Item>
                 </Menu>
             </React.Fragment>

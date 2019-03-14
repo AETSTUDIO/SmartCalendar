@@ -49,6 +49,7 @@ class ModalUI extends Component {
                         inverted={this.props.inverted}
                         color={this.props.color}
                         icon={this.props.icon}
+                        circular={this.props.circular}
                         onClick={this.closeConfigShow(false, false)}
                     >{this.props.category}
                     </Button>;
