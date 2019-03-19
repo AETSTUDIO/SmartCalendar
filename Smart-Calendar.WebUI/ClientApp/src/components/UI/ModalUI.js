@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal } from "semantic-ui-react";
+import { Button, Modal, Image } from "semantic-ui-react";
 
 class ModalUI extends Component {
     state = { open: false };
@@ -9,25 +9,27 @@ class ModalUI extends Component {
     };
 
     close = () => {
-        console.log(this.props.formvalid);
         this.props.header === 'Create New Account' ? this.props.validateForm() : null;
-        
-        if (this.props.formvalid) { 
-            //this.setState({ open: false });
-
+        if (this.props.formvalid) {
+            this.setState({ open: false });
             switch (this.props.header) {
-                case "Delete Staff":
+                case "Delete User Info":
                     return this.props.deleteUser();
                 case "Add User Info":
                     return this.props.addUserInfo();
+                case "Edit User Info":
+                    return this.props.editUserInfo();
                 case "Create New Account":
                     return this.props.addStaffInfo();
+                case "Sign In":
+                    return this.props.signin();
+                case "Sign Out":
+                    return this.props.signout();
                 default:
                     return null;
             }
-            this.setState({ open: false });
         }
-
+        this.props.showNotice();
     };
 
     cancel = () => {
@@ -37,34 +39,44 @@ class ModalUI extends Component {
 
     render() {
         const { open, closeOnEscape, closeOnDimmerClick } = this.state;
+        let trigger =
+            this.props.trigger === "image" ?
+                <Image src={this.props.image} onClick={this.closeConfigShow(false, false)} fluid />
+                : this.props.trigger === "category" ?
+                    <span onClick={this.closeConfigShow(false, false)} fluid>{this.props.category}</span>
+                    : <Button
+                        basic={this.props.basic}
+                        inverted={this.props.inverted}
+                        color={this.props.color}
+                        icon={this.props.icon}
+                        circular={this.props.circular}
+                        onClick={this.closeConfigShow(false, false)}
+                    >{this.props.category}
+                    </Button>;
 
         return (
             <React.Fragment>
-                <Button
-                    basic
-                    icon={this.props.icon}
-                    onClick={this.closeConfigShow(false, false)}>
-                    {this.props.category}
-                </Button>
-
+                {trigger}
                 <Modal
                     open={open}
                     closeOnEscape={closeOnEscape}
                     closeOnDimmerClick={closeOnDimmerClick}
-                    onClose={this.close}>
+                    onClose={this.close}
+                >
                     <Modal.Header>{this.props.header}</Modal.Header>
                     <Modal.Content>
                         <Modal.Description>{this.props.children}</Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={this.cancel} negative>
-                        Cancel</Button> 
+                        <Button onClick={this.cancel} inverted color="red">
+                            Cancel</Button>
                         <Button
-                        positive
-                        icon="checkmark"
-                        labelPosition="right"
-                        content="Confirm"
-                        onClick={this.close}/>
+                            inverted
+                            color="blue"
+                            onClick={this.close}
+                        >
+                            Done
+                        </Button>
                     </Modal.Actions>
                 </Modal>
             </React.Fragment>

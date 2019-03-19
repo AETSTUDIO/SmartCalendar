@@ -27,8 +27,8 @@ namespace Smart_Calendar.WebUI.Controllers
             if (result.Code == System.Net.HttpStatusCode.Unauthorized)
                 return Unauthorized();
 
-            //return Ok(new { jwtToken = result.Token });
-            return Ok(result);
+            return Ok(new { jwtToken = result.Token, result.RoleId, result.AccountId });
+            
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterDto regsiterDto)

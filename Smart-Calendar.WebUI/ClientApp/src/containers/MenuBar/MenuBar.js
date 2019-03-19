@@ -1,22 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import moment from "moment";
-import { Menu, Icon, Header, Input, Button } from "semantic-ui-react";
+import { Menu, Icon, Header, Input, Button, Dropdown } from "semantic-ui-react";
 import ModalUI from "../../components/UI/ModalUI";
-import DropdownUI from "../../components/UI/DropdownUI";
 import AddStaff from "../Profile/AddStaff";
 import EditProfile from "../Profile/EditProfile";
 import AccountSettings from "../Profile/AccountSettings";
 import LeaveRequests from "../LeaveRequests/LeaveRequests";
+import * as actions from "../../store/actions/index";
 import axios from "axios";
 
 
-export default class Menubar extends Component {
-    handleItemClick = () => { };
-
-
-  handleChange = e => {
-    e.preventDefault();
-    };
+class Menubar extends Component {
     state = {
         email: '',
         password: '',
@@ -24,7 +20,7 @@ export default class Menubar extends Component {
         emailerror: '',
         pwderror: '',
         roleerror: '',
-        formvalid:false
+        formvalid: false
     }
 
     handleFormChange = (e, { name, value }) => {
@@ -32,34 +28,32 @@ export default class Menubar extends Component {
     }
 
     addStaffInfo = (e) => {
-       // e.preventDefault();
- 
-            let userInfo = {
-                email: this.state.email,
-                password: this.state.password,
-                roleId: this.state.role
+        let userInfo = {
+            email: this.state.email,
+            password: this.state.password,
+            roleId: this.state.role
+        };
+        console.log(userInfo.email);
+        axios({
+            method: 'post',
+            url: 'https://localhost:44314/api/Account/Register',
+            data: userInfo
+        }).then(function (res) {
+
+            if (res.status === 200) {
+                alert('Account Created');
             }
-            console.log(userInfo.email);
-            axios({
-                method: 'post',
-                url: 'https://localhost:44314/api/Account/Register',
-                data: userInfo
-            }).then(function (res) {
-  
-                if (res.status == 200) {
-                  alert('Account Created');
-                }
-                else {
-                  alert('Account already Exists');
-                }
-               // debugger
-                this.setState({
-                    email: '',
-                    password: '',
-                    role: ''
-                });
-            }.bind(this));
-            //console.log("Staff info is added");
+            else {
+                alert('Account already Exists');
+            }
+            // debugger
+            this.setState({
+                email: '',
+                password: '',
+                role: ''
+            });
+        }.bind(this));
+        //console.log("Staff info is added");
     }
     clearStaffInfo = () => {
         this.setState({
@@ -69,7 +63,7 @@ export default class Menubar extends Component {
             emailerror: '',
             pwderror: '',
             roleerror: '',
-            formvalid:true
+            formvalid: true
         });
     }
 
@@ -83,7 +77,7 @@ export default class Menubar extends Component {
         error = '';
         perror = '';
         rolemsg = '';
-        
+
         if (!this.state.email) {
             emailflg = false;
             error = 'Please Enter Valid Email-ID';
@@ -104,88 +98,119 @@ export default class Menubar extends Component {
             rolemsg = 'Please Select Role';
         }
         if (emailflg && pwdflg && roleflg) { formisvalid = true; }
-        else { formisvalid = false;}
+        else { formisvalid = false; }
         this.setState({
             emailerror: error,
             pwderror: perror,
             roleerror: rolemsg,
             formvalid: formisvalid
         });
-       // console.log(this.state.formvalid);
-       // console.log(formisvalid);
-    }    
+        // console.log(this.state.formvalid);
+        // console.log(formisvalid);
+    }
 
     render() {
         const today = moment().format("DD MMMM YYYY, dddd");
         const currentWeek = moment().weeks();
+        let isDisplay = this.props.roleId === "1";
+
         return (
-            <Menu secondary>
-                <Menu.Item>
-                    <Header as="h1" size="large">
-                        <Icon name="calendar alternate outline" />
-                        <Header.Content>
-                            Smart Calendar
-              <Header.Subheader>
-                                The Next Generation HR Management System
-              </Header.Subheader>
-                        </Header.Content>
-                    </Header>
-                </Menu.Item>
-                <Menu.Item style={{ margin: "auto" }}>
-                    <h3>
-                        Current Week: {currentWeek} <br />
+            <React.Fragment>
+                {!this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
+                <Menu secondary>
+
+                    <Menu.Item >
+                        <Header as="h1" size="large">
+                            <Icon name="calendar alternate outline" />
+                            <Header.Content>
+                                Smart Calendar
+                            </Header.Content>
+                        </Header>
+                    </Menu.Item>
+                    <Menu.Item position="right" style={{ "letterSpacing": "0.2em" }}>
+                        THE NEXT GENERATION EMPLOYEE MANAGEMENT SYSTEM
+                    </Menu.Item>
+
+                </Menu>
+
+                <Menu inverted size="tiny" borderless>
+                    <Menu.Item style={{ "fontSize": "1.3em" }}>
+                        Current Week: {currentWeek}
+                    </Menu.Item>
+                    <Menu.Item style={{ "fontSize": "1.3em" }}>
                         {today}
-                    </h3>
-                </Menu.Item>
-                <Menu.Item position="right">
-                    <Menu compact secondary>
-                        <Menu.Item>
-                            <Input
-                                icon="users"
-                                iconPosition="left"
-                                placeholder="Search Staff..."
-                            />
-                        </Menu.Item>
+                    </Menu.Item>
+                    <Menu.Item position="right">
+                        <Input
+                            icon="users"
+                            iconPosition="left"
+                            placeholder="Search Staff..."
+                        />
+                    </Menu.Item>
+                    <Menu.Item>
+                        {isDisplay && <ModalUI icon="add user" circular inverted header="Create New Account"
+                            addStaffInfo={this.addStaffInfo}
+                            validateForm={this.validateForm}
+                            clearStaffInfo={this.clearStaffInfo}
+                            formvalid={this.state.formvalid}>
+                            <AddStaff onFormChange={this.handleFormChange}
+                                emailerror={this.state.emailerror}
+                                pwderror={this.state.pwderror}
+                                roleerror={this.state.roleerror} />
+                        </ModalUI>
+                        }
 
+                        <ModalUI icon="bell" inverted circular header="Leave Request List">
+                            <LeaveRequests />
+                        </ModalUI>
 
-            <Menu.Item>
-              <Button.Group>
-               <ModalUI icon="add user" header="Create New Account"
-                    addStaffInfo={this.addStaffInfo}
-                    validateForm={this.validateForm}
-                    clearStaffInfo={this.clearStaffInfo}
-                    formvalid={this.state.formvalid}>
-                <AddStaff onFormChange={this.handleFormChange}
-                emailerror={this.state.emailerror}
-                pwderror={this.state.pwderror}
-                roleerror={this.state.roleerror} />
-                </ModalUI>
-                <ModalUI icon="bell outline" header="Leave Request List">
-                  <LeaveRequests />
-                </ModalUI>
-                <DropdownUI
-                  icon="settings"
-                  headerIcon="user"
-                  content="Staff Name"
-                >
-                  <Button.Group vertical>
-                    <ModalUI header="Personal Profile" category="Profile">
-                      <EditProfile />
-                    </ModalUI>
-                    <ModalUI header="Account Settings" category="Account">
-                      <AccountSettings />
-                    </ModalUI>
-                    <ModalUI header="Signout Confirmation" category="Sign out">
-                      <h3>Do you want to sign out?</h3>
-                    </ModalUI>
-                  </Button.Group>
-                </DropdownUI>
-              </Button.Group>
-            </Menu.Item>
-          </Menu>
-        </Menu.Item>
-      </Menu>
-    );
-  }
+                        <Dropdown trigger={<Button icon="settings" inverted circular size="tiny" />} floating icon={null}>
+                            <Dropdown.Menu style={{ left: "auto", right: 0, fontSize: "1.3em" }}>
+                                <Dropdown.Header icon="user" content={this.props.accountEmail} />
+                                <Dropdown.Divider />
+                                <Dropdown.Item>
+                                    <ModalUI trigger="category" header="Personal Profile" category="Profile">
+                                        <EditProfile />
+                                    </ModalUI>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <ModalUI trigger="category" header="Account Settings" category="Account">
+                                        <AccountSettings />
+                                    </ModalUI>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    <ModalUI trigger="category" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} formvalid>
+                                        <h3>Do you want to sign out?</h3>
+                                    </ModalUI>
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Item>
+                </Menu>
+            </React.Fragment>
+        );
+    }
 
 }
+
+const mapStateToProps = state => {
+    return {
+        roleId: state.auth.roleId,
+        accountId: state.auth.accountId,
+        accountEmail: state.auth.email,
+        isAuthenticated: state.auth.token !== null,
+        authRedirectPath: state.auth.authRedirectPath
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSignout: () =>
+            dispatch(actions.logout())
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Menubar);
