@@ -4,121 +4,119 @@ import { Redirect } from "react-router-dom";
 import moment from "moment";
 import { Menu, Icon, Header, Input, Button, Dropdown } from "semantic-ui-react";
 import ModalUI from "../../components/UI/ModalUI";
-import AddStaff from "../Profile/AddStaff";
+import AddAccount from "../../components/UserInfo/AddAccount/AddAccount";
 import EditProfile from "../Profile/EditProfile";
 import AccountSettings from "../Profile/AccountSettings";
 import LeaveRequests from "../LeaveRequests/LeaveRequests";
 import * as actions from "../../store/actions/index";
-import axios from "axios";
+import { checkValidity } from "../../shared/validation";
 
 
 class Menubar extends Component {
     state = {
-        email: '',
-        password: '',
-        role: '',
-        emailerror: '',
-        pwderror: '',
-        roleerror: '',
-        formvalid: false
+        email: {
+            value: null,
+            validation: {
+                required: true,
+                isEmail: true
+            },
+            error: "Please enter a valid email",
+            valid: false
+        },
+        password: {
+            value: null,
+            validation: {
+                required: true,
+                minLength: 4
+            },
+            error: "Password must be greater than or equal to 4 digits",
+            valid: false
+        },
+        roleId: {
+            value: null,
+            validation: null,
+            error: "Please select a role",
+            valid: false
+        },
+        showFormNotice: false,
+        duplicatedEmail: false
     }
 
     handleFormChange = (e, { name, value }) => {
-        this.setState({ [name]: value }, () => { console.log(this.state); });
+        this.setState({
+            [name]: {
+                ...this.state[name],
+                value: value,
+                valid: checkValidity(
+                    value,
+                    this.state[name].validation
+                )
+            },
+            showFormNotice: false
+        }, () => {
+            if (!this.props.accounts.every(account => account.email !== this.state.email.value)) {
+                this.setState({ duplicatedEmail: true });
+            }
+        });
+
     }
 
-    addStaffInfo = (e) => {
-        let userInfo = {
-            email: this.state.email,
-            password: this.state.password,
-            roleId: this.state.role
+    addAccount = () => {
+        console.log("add");
+        let newAccount = {
+            email: this.state.email.value,
+            password: this.state.password.value,
+            roleId: this.state.roleId.value
         };
-        console.log(userInfo.email);
-        axios({
-            method: 'post',
-            url: 'https://localhost:44314/api/Account/Register',
-            data: userInfo
-        }).then(function (res) {
-
-            if (res.status === 200) {
-                alert('Account Created');
-            }
-            else {
-                alert('Account already Exists');
-            }
-            // debugger
-            this.setState({
-                email: '',
-                password: '',
-                role: ''
-            });
-        }.bind(this));
-        //console.log("Staff info is added");
-    }
-    clearStaffInfo = () => {
-        this.setState({
-            email: '',
-            password: '',
-            role: '',
-            emailerror: '',
-            pwderror: '',
-            roleerror: '',
-            formvalid: true
-        });
+        this.props.onAddAccount(newAccount);
     }
 
-    validateForm = () => {
+    showNotice = () => {
+        this.setState({ showFormNotice: true });
+    }
 
-        let formisvalid = false;
-        let error, perror, rolemsg;
-        let emailflg = true;
-        let pwdflg = true;
-        let roleflg = true;
-        error = '';
-        perror = '';
-        rolemsg = '';
-
-        if (!this.state.email) {
-            emailflg = false;
-            error = 'Please Enter Valid Email-ID';
-        }
-        else {
-            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-            if (!pattern.test(this.state.email)) {
-                emailflg = false;
-                error = "*Please enter valid email-ID.";
-            }
-        }
-        if (!this.state.password) {
-            pwdflg = false;
-            perror = 'Please Enter Password';
-        }
-        if (!this.state.role) {
-            roleflg = false;
-            rolemsg = 'Please Select Role';
-        }
-        if (emailflg && pwdflg && roleflg) { formisvalid = true; }
-        else { formisvalid = false; }
+    resetState = () => {
         this.setState({
-            emailerror: error,
-            pwderror: perror,
-            roleerror: rolemsg,
-            formvalid: formisvalid
+            email: {
+                value: null,
+                validation: {
+                    required: true,
+                    isEmail: true
+                },
+                error: "Please enter a valid email",
+                valid: false
+            },
+            password: {
+                value: null,
+                validation: {
+                    required: true,
+                    minLength: 4
+                },
+                error: "Password must be greater than or equal to 4 digits",
+                valid: false
+            },
+            roleId: {
+                value: null,
+                validation: null,
+                error: "Please select a role",
+                valid: false
+            },
+            showFormNotice: false,
+            duplicatedEmail: false
         });
-        // console.log(this.state.formvalid);
-        // console.log(formisvalid);
     }
 
     render() {
         const today = moment().format("DD MMMM YYYY, dddd");
         const currentWeek = moment().weeks();
         let isDisplay = this.props.roleId === "1";
+        let formValid = this.state.email.value && this.state.password.value && this.state.roleId.value &&
+            this.state.email.valid && this.state.password.valid && !this.state.duplicatedEmail;
 
         return (
             <React.Fragment>
                 {!this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
                 <Menu secondary>
-
                     <Menu.Item >
                         <Header as="h1" size="large">
                             <Icon name="calendar alternate outline" />
@@ -130,7 +128,6 @@ class Menubar extends Component {
                     <Menu.Item position="right" style={{ "letterSpacing": "0.2em" }}>
                         THE NEXT GENERATION EMPLOYEE MANAGEMENT SYSTEM
                     </Menu.Item>
-
                 </Menu>
 
                 <Menu inverted size="tiny" borderless>
@@ -148,15 +145,8 @@ class Menubar extends Component {
                         />
                     </Menu.Item>
                     <Menu.Item>
-                        {isDisplay && <ModalUI icon="add user" circular inverted header="Create New Account"
-                            addStaffInfo={this.addStaffInfo}
-                            validateForm={this.validateForm}
-                            clearStaffInfo={this.clearStaffInfo}
-                            formvalid={this.state.formvalid}>
-                            <AddStaff onFormChange={this.handleFormChange}
-                                emailerror={this.state.emailerror}
-                                pwderror={this.state.pwderror}
-                                roleerror={this.state.roleerror} />
+                        {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={formValid} showNotice={this.showNotice} reset={this.resetState}>
+                            <AddAccount onFormChange={this.handleFormChange} formControls={this.state} />
                         </ModalUI>
                         }
 
@@ -179,7 +169,7 @@ class Menubar extends Component {
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} formvalid>
+                                    <ModalUI trigger="category" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} reset={() => null} formvalid>
                                         <h3>Do you want to sign out?</h3>
                                     </ModalUI>
                                 </Dropdown.Item>
@@ -199,14 +189,15 @@ const mapStateToProps = state => {
         accountId: state.auth.accountId,
         accountEmail: state.auth.email,
         isAuthenticated: state.auth.token !== null,
-        authRedirectPath: state.auth.authRedirectPath
+        authRedirectPath: state.auth.authRedirectPath,
+        accounts: state.staffTable.accounts
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSignout: () =>
-            dispatch(actions.logout())
+        onSignout: () => dispatch(actions.logout()),
+        onAddAccount: newAccount => dispatch(actions.addAccount(newAccount))
     };
 };
 

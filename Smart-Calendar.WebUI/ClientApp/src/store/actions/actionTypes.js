@@ -3,6 +3,7 @@ export const SET_ACCOUNTS = "SET_ACCOUNTS";
 export const ADD_USERINFO = "ADD_USERINFO";
 export const DELETE_USERINFO = "DELETE_USERINFO";
 export const UPDATE_USERINFO = "UPDATE_USERINFO";
+export const ADD_ACCOUNTINFO = "ADD_ACCOUNTINFO";
 
 export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
