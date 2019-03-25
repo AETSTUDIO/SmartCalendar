@@ -50,6 +50,23 @@ export const updateUserInfo = updatedUser => {
     };
 };
 
+export const addAccount = newAccount => {
+    return dispatch => {
+        axios
+            .post("account/register", newAccount)
+            .then(response => {
+                dispatch(
+                    {
+                        type: actionTypes.ADD_ACCOUNTINFO,
+                        newAccounts: response.data
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+};
+
 export const setUsers = users => {
     return {
         type: actionTypes.SET_USERS,

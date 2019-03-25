@@ -37,8 +37,8 @@ namespace Smart_Calendar.WebUI.Controllers
             var accounts = await _accountRepo.GetAllAsync();
             var res = accounts.FirstOrDefault(a => a.Email == regsiterDto.Email);
             if(res == null){
-                 var result = await _IdentityService.CreateAccountAsync(regsiterDto);
-                return Ok(result);
+                await _IdentityService.CreateAccountAsync(regsiterDto);
+                return Ok(await _accountRepo.GetAllAsync());
             }
             else
             {

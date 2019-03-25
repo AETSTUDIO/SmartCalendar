@@ -13,8 +13,7 @@ class StaffTable extends Component {
             value: null,
             validation: null,
             error: "Please select an user email",
-            valid: false,
-            touched: false
+            valid: false
         },
         firstName: {
             value: null,
@@ -22,8 +21,7 @@ class StaffTable extends Component {
                 required: true
             },
             error: "Please enter first name",
-            valid: false,
-            touched: false
+            valid: false
         },
         lastName: {
             value: null,
@@ -31,29 +29,25 @@ class StaffTable extends Component {
                 required: true
             },
             error: "Please enter last name",
-            valid: false,
-            touched: false
+            valid: false
         },
         selectedGender: {
             value: null,
             validation: null,
             error: "Please select gender",
-            valid: false,
-            touched: false
+            valid: false
         },
         selectedDept: {
             value: null,
             validation: null,
             error: "Please select Department",
-            valid: false,
-            touched: false
+            valid: false
         },
         selectedPos: {
             value: null,
             validation: null,
             error: "Please select position",
-            valid: false,
-            touched: false
+            valid: false
         },
         updatedUser: {
             firstName: null,
@@ -75,16 +69,13 @@ class StaffTable extends Component {
                     value,
                     this.state[name].validation
                 ),
-                touched: true
             },
             showFormNotice: false
         });
     };
 
     showNotice = () => {
-        
         this.setState({ showFormNotice: true });
-
     }
 
     addUserInfo = () => {
@@ -97,6 +88,56 @@ class StaffTable extends Component {
             positionId: this.state.selectedPos.value
         };
         this.props.onAddUserInfo(userInfo);
+    }
+
+    resetUserInfo = () => {
+        this.setState({
+            selectedAccountId: {
+                value: null,
+                validation: null,
+                error: "Please select an user email",
+                valid: false
+            },
+            firstName: {
+                value: null,
+                validation: {
+                    required: true
+                },
+                error: "Please enter first name",
+                valid: false
+            },
+            lastName: {
+                value: null,
+                validation: {
+                    required: true
+                },
+                error: "Please enter last name",
+                valid: false
+            },
+            selectedGender: {
+                value: null,
+                validation: null,
+                error: "Please select gender",
+                valid: false
+            },
+            selectedDept: {
+                value: null,
+                validation: null,
+                error: "Please select Department",
+                valid: false
+            },
+            selectedPos: {
+                value: null,
+                validation: null,
+                error: "Please select position",
+                valid: false
+            },
+            updatedUser: {
+                firstName: null,
+                lastName: null
+            },
+            showFormNotice: false
+        });
     }
 
     getUpdatedUser = (updatedUser) => {
@@ -141,8 +182,8 @@ class StaffTable extends Component {
                                 {isDisplay && <Table.HeaderCell>
                                     <h3>Action
                                    <ButtonGroup>
-                                            <ModalUI basic icon="add" header="Add User Info" addUserInfo={this.addUserInfo} formvalid={addUserValid} showNotice={this.showNotice}>
-                                                <AddUserInfo accounts={availableAccounts} onFormChange={this.onFormChange} formControls={this.state} showFormNotice={this.state.showFormNotice} />
+                                            <ModalUI basic icon="add" header="Add User Info" addUserInfo={this.addUserInfo} formvalid={addUserValid} showNotice={this.showNotice} reset={this.resetUserInfo}>
+                                                <AddUserInfo accounts={availableAccounts} onFormChange={this.onFormChange} formControls={this.state} />
                                             </ModalUI>
                                         </ButtonGroup>
                                     </h3>
@@ -153,7 +194,6 @@ class StaffTable extends Component {
                         <Table.Body>
                             {this.props.users.map(user => (
                                 <TableRow
-                                    showForm={this.state.showForm}
                                     key={user.id}
                                     user={user}
                                     isDisplay={isDisplay}
@@ -164,6 +204,7 @@ class StaffTable extends Component {
                                     showNotice={this.showNotice}
                                     showFormNotice={this.state.showFormNotice}
                                     editUserInfo={() => this.props.onUpdateUserInfo(this.state.updatedUser)}
+                                    reset={this.resetUserInfo}
                                 />
                             ))}
                         </Table.Body>

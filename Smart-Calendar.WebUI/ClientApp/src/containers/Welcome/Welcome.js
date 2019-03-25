@@ -17,8 +17,7 @@ class Welcome extends Component {
                 isEmail: true
             },
             error: "Please enter a valid email",
-            valid: false,
-            touched: false
+            valid: false
         },
         password: {
             value: null,
@@ -27,10 +26,9 @@ class Welcome extends Component {
                 minLength: 4
             },
             error: "Password must be greater than or equal to 4 digits",
-            valid: false,
-            touched: false
+            valid: false
         },
-        showformNotice: false
+        showFormNotice: false
     }
 
     handleFormChange = (e, { name, value }) => {
@@ -42,7 +40,6 @@ class Welcome extends Component {
                     value,
                     this.state[name].validation
                 ),
-                touched: true
             },
             showFormNotice: false
         });
@@ -52,11 +49,33 @@ class Welcome extends Component {
         this.setState({ showFormNotice: true });
     }
 
+    resetSignIn = () => {
+        this.setState({
+            email: {
+                value: null,
+                validation: {
+                    required: true,
+                    isEmail: true
+                },
+                error: "Please enter a valid email",
+                valid: false
+            },
+            password: {
+                value: null,
+                validation: {
+                    required: true,
+                    minLength: 4
+                },
+                error: "Password must be greater than or equal to 4 digits",
+                valid: false
+            },
+            showFormNotice: false
+        });
+    }
 
     render() {
 
         let form = (<React.Fragment>
-            {this.state.showFormNotice && <Message attached negative>Please check the form and try again</Message>}
             <Form>
                 <Form.Field
                     control={Input}
@@ -66,9 +85,7 @@ class Welcome extends Component {
                     placeholder="Email Address"
                     onChange={this.handleFormChange}
                 />
-                {this.state.email.touched &&
-                    !this.state.email.valid &&
-                    <Message size="small" negative>{this.state.email.error}</Message>}
+                {this.state.showFormNotice && !this.state.email.valid && <Message size="small" negative>{this.state.email.error}</Message>}
 
                 <Form.Field
                     control={Input}
@@ -78,9 +95,7 @@ class Welcome extends Component {
                     placeholder="Password"
                     onChange={this.handleFormChange}
                 />
-                {this.state.password.touched &&
-                    !this.state.password.valid &&
-                    <Message size="small" negative>{this.state.password.error}</Message>}
+                {this.state.showFormNotice && !this.state.password.valid && <Message size="small" negative>{this.state.password.error}</Message>}
             </Form>
             <div className="text center form-footer">
                 <a>Forgot your Password?</a>
@@ -120,6 +135,7 @@ class Welcome extends Component {
                             inverted
                             formvalid={formValid}
                             showNotice={this.showNotice}
+                            reset={this.resetSignIn}
                         >
                             {form}
                         </ModalUI>
@@ -135,6 +151,7 @@ class Welcome extends Component {
                         signin={() => { this.props.onAuth(this.state.email.value, this.state.password.value) }}
                         formvalid={formValid}
                         showNotice={this.showNotice}
+                        reset={this.resetSignIn}
                     >
                         {form}
                     </ModalUI>}

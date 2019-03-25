@@ -2,7 +2,8 @@
     initTable,
     addUserInfo,
     deleteUserInfo,
-    updateUserInfo
+    updateUserInfo,
+    addAccount
 } from './staffTable';
 
 export {

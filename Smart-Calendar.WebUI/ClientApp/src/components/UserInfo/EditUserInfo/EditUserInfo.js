@@ -42,7 +42,6 @@ class EditUserInfo extends Component {
         return (
             
             <div>
-                {this.props.showFormNotice && <Message negative>Please check the form and try again</Message>}
                 <Form>
                     <Form.Group widths="equal">
                         <Form.Field
@@ -60,14 +59,16 @@ class EditUserInfo extends Component {
                             onChange={this.onFormChange}
                         />
                     </Form.Group>
-                    <Form.Group widths="equal">
-                        <Form.Field>
-                            {!this.state.firstName && <Message size="small" negative>Please enter first name</Message>}
-                        </Form.Field>
-                        <Form.Field>
-                            {!this.state.lastName && <Message size="small" negative>Please enter last name</Message>}
-                        </Form.Field>
-                    </Form.Group>
+                    {this.props.showFormNotice &&
+                        <Form.Group widths="equal">
+                            <Form.Field>
+                                {!this.state.firstName && <Message size="small" negative>Please enter first name</Message>}
+                            </Form.Field>
+                            <Form.Field>
+                                {!this.state.lastName && <Message size="small" negative>Please enter last name</Message>}
+                            </Form.Field>
+                        </Form.Group>
+                    }
                     <Form.Group widths="equal">
                         <Form.Field
                             control={Select}

@@ -20,7 +20,6 @@ const AddUserInfo = props => {
     ];
     return (
         <div>
-            {props.showFormNotice && <Message negative>Please check the form and try again</Message>}
             <Form>
                 <Form.Group widths="equal">
                     <Form.Field
@@ -48,22 +47,19 @@ const AddUserInfo = props => {
                         onChange={props.onFormChange}
                     />
                 </Form.Group>
-                <Form.Group widths="equal">
-                    <Form.Field>
-                        {props.showFormNotice && !props.formControls.selectedAccountId.value &&
-                            <Message size="small" negative>{props.formControls.selectedAccountId.error}</Message>}
-                    </Form.Field>
-                    <Form.Field>
-                        {(props.showFormNotice || props.formControls.firstName.touched ) &&
-                            !props.formControls.firstName.valid &&
-                            <Message size="small" negative>{props.formControls.firstName.error}</Message>}
-                    </Form.Field>
-                    <Form.Field>
-                        {(props.showFormNotice || props.formControls.lastName.touched) &&
-                            !props.formControls.lastName.valid &&
-                            <Message size="small" negative>{props.formControls.lastName.error}</Message>}
-                    </Form.Field>
-                </Form.Group>
+                {props.formControls.showFormNotice &&
+                    <Form.Group widths="equal">
+                        <Form.Field>
+                            {!props.formControls.selectedAccountId.value && <Message size="small" negative>{props.formControls.selectedAccountId.error}</Message>}
+                        </Form.Field>
+                        <Form.Field>
+                            {!props.formControls.firstName.valid && <Message size="small" negative>{props.formControls.firstName.error}</Message>}
+                        </Form.Field>
+                        <Form.Field>
+                            {!props.formControls.lastName.valid && <Message size="small" negative>{props.formControls.lastName.error}</Message>}
+                        </Form.Field>
+                    </Form.Group>
+                }
                 <Form.Group widths="equal">
                     <Form.Field
                         control={Select}
@@ -91,20 +87,19 @@ const AddUserInfo = props => {
                         onChange={props.onFormChange}
                     />
                 </Form.Group>
-                <Form.Group widths="equal">
-                    <Form.Field>
-                        {props.showFormNotice && !props.formControls.selectedGender.value &&
-                            <Message size="small" negative>{props.formControls.selectedGender.error}</Message>}
-                    </Form.Field>
-                    <Form.Field>
-                        {props.showFormNotice && !props.formControls.selectedDept.value &&
-                            <Message size="small" negative>{props.formControls.selectedDept.error}</Message>}
-                    </Form.Field>
-                    <Form.Field>
-                        {props.showFormNotice && !props.formControls.selectedPos.value &&
-                            <Message size="small" negative>{props.formControls.selectedPos.error}</Message>}
-                    </Form.Field>
-                </Form.Group>
+                {props.formControls.showFormNotice &&
+                    <Form.Group widths="equal">
+                        <Form.Field>
+                            {!props.formControls.selectedGender.value && <Message size="small" negative>{props.formControls.selectedGender.error}</Message>}
+                        </Form.Field>
+                        <Form.Field>
+                            {!props.formControls.selectedDept.value && <Message size="small" negative>{props.formControls.selectedDept.error}</Message>}
+                        </Form.Field>
+                        <Form.Field>
+                            {!props.formControls.selectedPos.value && <Message size="small" negative>{props.formControls.selectedPos.error}</Message>}
+                        </Form.Field>
+                    </Form.Group>
+                }
             </Form>
         </div>
     );

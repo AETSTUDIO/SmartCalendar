@@ -8,8 +8,7 @@ class ModalUI extends Component {
         this.setState({ closeOnEscape, closeOnDimmerClick, open: true });
     };
 
-    close = () => {
-        this.props.header === 'Create New Account' ? this.props.validateForm() : null;
+    confirm = () => {
         if (this.props.formvalid) {
             this.setState({ open: false });
             switch (this.props.header) {
@@ -19,8 +18,8 @@ class ModalUI extends Component {
                     return this.props.addUserInfo();
                 case "Edit User Info":
                     return this.props.editUserInfo();
-                case "Create New Account":
-                    return this.props.addStaffInfo();
+                case "Add Account":
+                    return this.props.addAccount();
                 case "Sign In":
                     return this.props.signin();
                 case "Sign Out":
@@ -33,8 +32,8 @@ class ModalUI extends Component {
     };
 
     cancel = () => {
-        this.props.header === 'Create New Account' ? this.props.clearStaffInfo() : null;
         this.setState({ open: false });
+        this.props.reset();
     };
 
     render() {
@@ -43,7 +42,7 @@ class ModalUI extends Component {
             this.props.trigger === "image" ?
                 <Image src={this.props.image} onClick={this.closeConfigShow(false, false)} fluid />
                 : this.props.trigger === "category" ?
-                    <span onClick={this.closeConfigShow(false, false)} fluid>{this.props.category}</span>
+                    <span onClick={this.closeConfigShow(false, false)}>{this.props.category}</span>
                     : <Button
                         basic={this.props.basic}
                         inverted={this.props.inverted}
@@ -73,7 +72,7 @@ class ModalUI extends Component {
                         <Button
                             inverted
                             color="blue"
-                            onClick={this.close}
+                            onClick={this.confirm}
                         >
                             Done
                         </Button>

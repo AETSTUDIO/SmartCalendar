@@ -26,6 +26,10 @@ const updateUserInfo = (state, action) => {
     return { ...state, users: action.newUsers };
 };
 
+const addAccountInfo = (state, action) => {
+    return { ...state, accounts: action.newAccounts };
+};
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.SET_USERS:
@@ -38,6 +42,8 @@ const reducer = (state = initialState, action) => {
             return deleteUserInfo(state, action);
         case actionTypes.UPDATE_USERINFO:
             return updateUserInfo(state, action);
+        case actionTypes.ADD_ACCOUNTINFO:
+            return addAccountInfo(state, action)
         default:
             return state;
     }
