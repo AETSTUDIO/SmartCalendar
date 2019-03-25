@@ -1,6 +1,21 @@
 ﻿import * as actionTypes from "./actionTypes";
 import axios from "../../axios-api";
 
+
+export const getUserInfo = id => {
+    return dispatch => {
+        axios.get("calendar/user/" + id)
+            .then(response => {
+                dispatch({
+                    type: actionTypes.GET_USERINFO,
+                    currentUser: response.data
+                });
+            }).catch(error => {
+                console.log(error);
+            });
+    };
+};
+
 export const addUserInfo = userInfo => {
     return dispatch => {
         axios
@@ -47,6 +62,21 @@ export const updateUserInfo = updatedUser => {
                 console.log(error);
             });
         
+    };
+};
+
+export const updateUserPartial = updatedUser => {
+    return dispatch => {
+        axios.put("calendar/userPartial/" + updatedUser.userId, updatedUser)
+            .then(response => {
+                dispatch({
+                    type: actionTypes.UPDATE_USERINFO,
+                    newUsers: response.data.value,
+                    currentUser: updatedUser
+                });
+            }).catch(error => {
+                console.log(error);
+            });
     };
 };
 
