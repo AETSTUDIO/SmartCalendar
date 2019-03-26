@@ -12,6 +12,7 @@ const TableRow = props => {
             <Table.Cell>{props.user.gender}</Table.Cell>
             <Table.Cell>{props.user.department}</Table.Cell>
             <Table.Cell>{props.user.position}</Table.Cell>
+            <Table.Cell>{props.user.email}</Table.Cell>
             <Table.Cell>
                 <Shift editable={false} userShifts={props.user.userShifts} />
             </Table.Cell>

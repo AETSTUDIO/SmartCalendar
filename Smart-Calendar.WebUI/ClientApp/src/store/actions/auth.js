@@ -41,9 +41,7 @@ export const auth = (email, password) => {
             email: email,
             password: password
         };
-        let url = "Account/Login";
-        axios
-            .post(url, authData)
+        axios.post("Account/Login", authData)
             .then(response => {
                 localStorage.setItem("token", response.data.jwtToken);
                 localStorage.setItem("roleId", response.data.roleId.toString());

@@ -68,7 +68,7 @@ class StaffTable extends Component {
                 valid: checkValidity(
                     value,
                     this.state[name].validation
-                ),
+                )
             },
             showFormNotice: false
         });
@@ -175,6 +175,9 @@ class StaffTable extends Component {
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     <h3>Position</h3>
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    <h3>Email</h3>
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     <h3>Shift Info</h3>

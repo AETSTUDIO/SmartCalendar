@@ -11,7 +11,6 @@ import LeaveRequests from "../LeaveRequests/LeaveRequests";
 import * as actions from "../../store/actions/index";
 import { checkValidity } from "../../shared/validation";
 
-
 class Menubar extends Component {
     state = {
         email: {
@@ -38,8 +37,16 @@ class Menubar extends Component {
             error: "Please select a role",
             valid: false
         },
+        updatedUser: {
+            firstName: null,
+            lastName: null
+        },
         showFormNotice: false,
         duplicatedEmail: false
+    }
+
+    componentDidMount() {
+        this.props.onGetUser(this.props.accountId);
     }
 
     handleFormChange = (e, { name, value }) => {
@@ -62,13 +69,16 @@ class Menubar extends Component {
     }
 
     addAccount = () => {
-        console.log("add");
         let newAccount = {
             email: this.state.email.value,
             password: this.state.password.value,
             roleId: this.state.roleId.value
         };
         this.props.onAddAccount(newAccount);
+    }
+
+    getUpdatedUser = (updatedUser) => {
+        this.setState({ updatedUser: updatedUser });
     }
 
     showNotice = () => {
@@ -101,6 +111,10 @@ class Menubar extends Component {
                 error: "Please select a role",
                 valid: false
             },
+            updatedUser: {
+                firstName: null,
+                lastName: null
+            },
             showFormNotice: false,
             duplicatedEmail: false
         });
@@ -110,8 +124,9 @@ class Menubar extends Component {
         const today = moment().format("DD MMMM YYYY, dddd");
         const currentWeek = moment().weeks();
         let isDisplay = this.props.roleId === "1";
-        let formValid = this.state.email.value && this.state.password.value && this.state.roleId.value &&
+        let addAccountValid = this.state.email.value && this.state.password.value && this.state.roleId.value &&
             this.state.email.valid && this.state.password.valid && !this.state.duplicatedEmail;
+        let accountSettingValid = this.state.updatedUser.firstName && this.state.updatedUser.lastName;
 
         return (
             <React.Fragment>
@@ -145,7 +160,7 @@ class Menubar extends Component {
                         />
                     </Menu.Item>
                     <Menu.Item>
-                        {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={formValid} showNotice={this.showNotice} reset={this.resetState}>
+                        {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
                             <AddAccount onFormChange={this.handleFormChange} formControls={this.state} />
                         </ModalUI>
                         }
@@ -159,13 +174,13 @@ class Menubar extends Component {
                                 <Dropdown.Header icon="user" content={this.props.accountEmail} />
                                 <Dropdown.Divider />
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" header="Personal Profile" category="Profile">
+                                    <ModalUI trigger="category" header="Personal Profile" category="Profile" reset={() => null}>
                                         <EditProfile />
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" header="Account Settings" category="Account">
-                                        <AccountSettings />
+                                    <ModalUI trigger="category" header="Account Settings" category="Account" accountSettings={() => this.props.onUpdateUserInfo(this.state.updatedUser)} formvalid={accountSettingValid} showNotice={this.showNotice} reset={this.resetState}>
+                                        <AccountSettings currentUser={this.props.currentUser} accountEmail={this.props.accountEmail} getUpdatedUser={this.getUpdatedUser} showFormNotice={this.state.showFormNotice}/>
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
@@ -190,14 +205,17 @@ const mapStateToProps = state => {
         accountEmail: state.auth.email,
         isAuthenticated: state.auth.token !== null,
         authRedirectPath: state.auth.authRedirectPath,
-        accounts: state.staffTable.accounts
+        accounts: state.staffTable.accounts,
+        currentUser: state.staffTable.currentUser
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         onSignout: () => dispatch(actions.logout()),
-        onAddAccount: newAccount => dispatch(actions.addAccount(newAccount))
+        onAddAccount: newAccount => dispatch(actions.addAccount(newAccount)),
+        onGetUser: id => dispatch(actions.getUserInfo(id)),
+        onUpdateUserInfo: updatedUser => dispatch(actions.updateUserPartial(updatedUser))
     };
 };
 

@@ -20,6 +20,8 @@ class ModalUI extends Component {
                     return this.props.editUserInfo();
                 case "Add Account":
                     return this.props.addAccount();
+                case "Account Settings":
+                    return this.props.accountSettings();
                 case "Sign In":
                     return this.props.signin();
                 case "Sign Out":

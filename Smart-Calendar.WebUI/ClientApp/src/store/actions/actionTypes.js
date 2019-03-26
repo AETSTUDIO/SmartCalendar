@@ -1,5 +1,6 @@
 ﻿export const SET_USERS = "SET_USERS";
 export const SET_ACCOUNTS = "SET_ACCOUNTS";
+export const GET_USERINFO = "GET_USERINFO";
 export const ADD_USERINFO = "ADD_USERINFO";
 export const DELETE_USERINFO = "DELETE_USERINFO";
 export const UPDATE_USERINFO = "UPDATE_USERINFO";
