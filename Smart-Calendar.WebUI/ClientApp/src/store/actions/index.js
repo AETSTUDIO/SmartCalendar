@@ -1,8 +1,10 @@
 ﻿export {
     initTable,
+    getUserInfo,
     addUserInfo,
     deleteUserInfo,
     updateUserInfo,
+    updateUserPartial,
     addAccount
 } from './staffTable';
 

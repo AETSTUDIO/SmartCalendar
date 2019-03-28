@@ -2,7 +2,8 @@
 
 const initialState = {
     users: null,
-    accounts: null
+    accounts: null,
+    currentUser: null
 };
 
 const setUsers = (state, action) => {
@@ -11,6 +12,10 @@ const setUsers = (state, action) => {
 
 const setAccounts = (state, action) => {
     return { ...state, accounts: action.accounts };
+};
+
+const getUserInfo = (state, action) => {
+    return { ...state, currentUser: action.currentUser };
 };
 
 const addUserInfo = (state, action) => {
@@ -23,7 +28,7 @@ const deleteUserInfo = (state, action) => {
 };
 
 const updateUserInfo = (state, action) => {
-    return { ...state, users: action.newUsers };
+    return { ...state, users: action.newUsers, currentUser: action.currentUser };
 };
 
 const addAccountInfo = (state, action) => {
@@ -36,6 +41,8 @@ const reducer = (state = initialState, action) => {
             return setUsers(state, action);
         case actionTypes.SET_ACCOUNTS:
             return setAccounts(state, action);
+        case actionTypes.GET_USERINFO:
+            return getUserInfo(state, action);
         case actionTypes.ADD_USERINFO:
             return addUserInfo(state, action);
         case actionTypes.DELETE_USERINFO:
@@ -43,7 +50,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.UPDATE_USERINFO:
             return updateUserInfo(state, action);
         case actionTypes.ADD_ACCOUNTINFO:
-            return addAccountInfo(state, action)
+            return addAccountInfo(state, action);
         default:
             return state;
     }

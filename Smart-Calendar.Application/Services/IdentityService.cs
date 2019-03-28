@@ -52,7 +52,7 @@ namespace Smart_Calendar.Application.Services
                 Token = _jwtHelper.GenerateToken(credential.Email),
                 Code = System.Net.HttpStatusCode.OK,
                 RoleId = user.RoleId,
-                AccountId = user.AccountId,
+                AccountId = user.AccountId
             };
         }
         private bool VerifyPasswordHash(byte[] hash, byte[] salt, string password)

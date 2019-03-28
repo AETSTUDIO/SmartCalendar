@@ -39,7 +39,7 @@ class Welcome extends Component {
                 valid: checkValidity(
                     value,
                     this.state[name].validation
-                ),
+                )
             },
             showFormNotice: false
         });
@@ -130,7 +130,7 @@ class Welcome extends Component {
                         <ModalUI category="Sign In"
                             header="Sign In"
                             color="blue"
-                            signin={() => { this.props.onAuth(this.state.email.value, this.state.password.value) }}
+                            signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
                             basic={false}
                             inverted
                             formvalid={formValid}
@@ -148,7 +148,7 @@ class Welcome extends Component {
                     <ModalUI header="Sign In"
                         trigger="image"
                         image={banner}
-                        signin={() => { this.props.onAuth(this.state.email.value, this.state.password.value) }}
+                        signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
                         formvalid={formValid}
                         showNotice={this.showNotice}
                         reset={this.resetSignIn}

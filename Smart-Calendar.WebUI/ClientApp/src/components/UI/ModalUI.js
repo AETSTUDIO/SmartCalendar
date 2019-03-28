@@ -18,8 +18,18 @@ class ModalUI extends Component {
                     return this.props.addUserInfo();
                 case "Edit User Info":
                     return this.props.editUserInfo();
+                case "Create New Account":
+                    return this.props.addStaffInfo();
+                case "Delete Leave Record":
+                    return this.props.deleteLeaveInfo();
+                case "ApplyLeave":
+                    return this.props.addleaveInfo();
+                case "Leave Request List":
+                    return this.props.updateLeaveInfo();
                 case "Add Account":
                     return this.props.addAccount();
+                case "Account Settings":
+                    return this.props.accountSettings();
                 case "Sign In":
                     return this.props.signin();
                 case "Sign Out":
@@ -50,6 +60,7 @@ class ModalUI extends Component {
                         icon={this.props.icon}
                         circular={this.props.circular}
                         onClick={this.closeConfigShow(false, false)}
+                        floated={this.props.floated}
                     >{this.props.category}
                     </Button>;
 
