@@ -1,23 +1,23 @@
 import React, { Component } from "react";
-import { Button, Modal, Image } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 
 class ModalUI extends Component {
-    state = { open: false };
+    state = { open: false, dimmer: null };
 
-    closeConfigShow = (closeOnEscape, closeOnDimmerClick) => () => {
-        this.setState({ closeOnEscape, closeOnDimmerClick, open: true });
+    closeConfigShow = (closeOnEscape, closeOnDimmerClick, dimmer) => () => {
+        this.setState({ closeOnEscape, closeOnDimmerClick, dimmer, open: true });
     };
 
     confirm = () => {
         if (this.props.formvalid) {
             this.setState({ open: false });
             switch (this.props.header) {
-                case "Delete User Info":
-                    return this.props.deleteUser();
-                case "Add User Info":
-                    return this.props.addUserInfo();
-                case "Edit User Info":
-                    return this.props.editUserInfo();
+                case "Delete Employee Info":
+                    return this.props.deleteEmployeeInfo();
+                case "Add Employee Info":
+                    return this.props.addEmployeeInfo();
+                case "Edit Employee Info":
+                    return this.props.editEmployeeInfo();
                 case "Add Account":
                     return this.props.addAccount();
                 case "Account Settings":
@@ -39,26 +39,25 @@ class ModalUI extends Component {
     };
 
     render() {
-        const { open, closeOnEscape, closeOnDimmerClick } = this.state;
-        let trigger =
-            this.props.trigger === "image" ?
-                <Image src={this.props.image} onClick={this.closeConfigShow(false, false)} fluid />
-                : this.props.trigger === "category" ?
-                    <span onClick={this.closeConfigShow(false, false)}>{this.props.category}</span>
-                    : <Button
-                        basic={this.props.basic}
-                        inverted={this.props.inverted}
-                        color={this.props.color}
-                        icon={this.props.icon}
-                        circular={this.props.circular}
-                        onClick={this.closeConfigShow(false, false)}
-                    >{this.props.category}
-                    </Button>;
+        const { open, dimmer, closeOnEscape, closeOnDimmerClick } = this.state;
+        let trigger = this.props.trigger === "category" ? <span onClick={this.closeConfigShow(false, false, "blurring")}>{this.props.category}</span>
+                : (<Button
+                    basic={this.props.basic}
+                    inverted={this.props.inverted}
+                    color={this.props.color}
+                    size={this.props.size}
+                    icon={this.props.icon}
+                    circular={this.props.circular}
+                    onClick={this.closeConfigShow(false, false, "blurring")}
+                >{this.props.category}
+                </Button>);
 
         return (
             <React.Fragment>
                 {trigger}
                 <Modal
+                    dimmer={dimmer}
+                    size={this.props.modalSize}
                     open={open}
                     closeOnEscape={closeOnEscape}
                     closeOnDimmerClick={closeOnDimmerClick}
@@ -69,15 +68,8 @@ class ModalUI extends Component {
                         <Modal.Description>{this.props.children}</Modal.Description>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={this.cancel} inverted color="red">
-                            Cancel</Button>
-                        <Button
-                            inverted
-                            color="blue"
-                            onClick={this.confirm}
-                        >
-                            Done
-                        </Button>
+                            <Button onClick={this.cancel} >Cancel</Button>
+                            <Button primary onClick={this.confirm}>Done</Button>
                     </Modal.Actions>
                 </Modal>
             </React.Fragment>

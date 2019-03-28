@@ -12,14 +12,16 @@ const Shift = props => {
     return (
         !props.editable ?
             <React.Fragment>
-                <List bulleted>
-                    {props.userShifts.map(shift => (
-                        <List.Item key={shift.userShiftId}>
-                            <List.Header>{shift.day}</List.Header>
-                            {shift.shift.timeSlot}
-                        </List.Item>
-                    ))}
-                </List >
+                {props.userShifts.length === 0 ? "Not Added":
+                    <List bulleted>
+                        {props.userShifts.map(shift => (
+                            <List.Item key={shift.userShiftId}>
+                                <List.Header>{shift.day}</List.Header>
+                                {shift.shift.timeSlot}
+                            </List.Item>
+                        ))}
+                    </List >  
+                }
             </React.Fragment> :
             <React.Fragment>
                 <List horizontal>
@@ -27,7 +29,7 @@ const Shift = props => {
                         <List.Item key={i}  >
                             <Icon />
                             <List.Content>
-                                <List.Header>{shift.day} <Icon name="times" onClick={() => props.removeShift(shift.day)}/></List.Header>
+                                <List.Header>{shift.day} <Icon name="times" onClick={() => props.removeShift(shift.day)} /></List.Header>
                                 {timeOptions.find(t => t.value === shift.shiftId).text}
                             </List.Content>
                         </List.Item>

@@ -5,6 +5,7 @@
     deleteUserInfo,
     updateUserInfo,
     updateUserPartial,
+    setSearchField,
     addAccount
 } from './staffTable';
 

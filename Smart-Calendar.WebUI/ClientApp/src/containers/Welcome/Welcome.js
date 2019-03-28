@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { Menu, Header, Form, Input, Container, Divider, Loader, Message } from 'semantic-ui-react';
+import { Menu, Header, Icon, Form, Input, Container, Divider, Loader, Label, Message } from "semantic-ui-react";
 import ModalUI from "../../components/UI/ModalUI";
-import Footer from '../../components/Footer/Footer';
-import banner from "./images/banner.jpg";
+import Footer from "../../components/Footer/Footer";
+//import banner from "./images/banner.jpg";
 import * as actions from "../../store/actions/index";
 import { checkValidity } from "../../shared/validation";
 
@@ -85,8 +85,8 @@ class Welcome extends Component {
                     placeholder="Email Address"
                     onChange={this.handleFormChange}
                 />
-                {this.state.showFormNotice && !this.state.email.valid && <Message size="small" negative>{this.state.email.error}</Message>}
-
+                {this.state.showFormNotice && !this.state.email.valid && <Label basic color="red" pointing>{this.state.email.error}</Label>}
+                <Divider hidden />
                 <Form.Field
                     control={Input}
                     type="password"
@@ -95,10 +95,11 @@ class Welcome extends Component {
                     placeholder="Password"
                     onChange={this.handleFormChange}
                 />
-                {this.state.showFormNotice && !this.state.password.valid && <Message size="small" negative>{this.state.password.error}</Message>}
+                {this.state.showFormNotice && !this.state.password.valid && <Label basic color="red" pointing>{this.state.password.error}</Label>}
             </Form>
+            <Divider hidden />
             <div className="text center form-footer">
-                <a>Forgot your Password?</a>
+                <a>New employee? Please contact admin for a registration form</a>
             </div>
         </React.Fragment>);
 
@@ -116,26 +117,23 @@ class Welcome extends Component {
             <React.Fragment>
                 {this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
                 <Menu fluid secondary>
-                    <Menu.Item position="right">
+                    <Menu.Item >
                         <Header as="h1" size="large">
+                            <Icon name="calendar alternate outline" />
                             <Header.Content>
-                                Welcome to Smart Calendar
-                            <Header.Subheader>
-                                    The Next Generation EMS
-                            </Header.Subheader>
+                                Smart Calendar
                             </Header.Content>
                         </Header>
                     </Menu.Item>
-                    <Menu.Item position="right">
-                        <ModalUI category="Sign In"
+
+                    <Menu.Item position="right" style={{ fontSize: "1.3em" }}>
+                        <ModalUI trigger="category" category="Sign In"
                             header="Sign In"
-                            color="blue"
                             signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
-                            basic={false}
-                            inverted
                             formvalid={formValid}
                             showNotice={this.showNotice}
                             reset={this.resetSignIn}
+                            modalSize="tiny"
                         >
                             {form}
                         </ModalUI>
@@ -143,22 +141,43 @@ class Welcome extends Component {
                 </Menu>
 
                 {errorMessage}
-                {this.props.loading ?
-                    <Loader active inline="centered" size="massive" /> :
-                    <ModalUI header="Sign In"
-                        trigger="image"
-                        image={banner}
-                        signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
-                        formvalid={formValid}
-                        showNotice={this.showNotice}
-                        reset={this.resetSignIn}
-                    >
-                        {form}
-                    </ModalUI>}
-                <Divider hidden />
                 <Container>
-                    <Footer />
+                    <Header as="h1"
+                        content="Welcome to Smart Calendar"
+                        style={{
+                            fontSize: "4em",
+                            fontWeight: "normal",
+                            marginBottom: 0,
+                            marginTop: "1em"
+                        }}
+                    />
+                    <Header as="h2"
+                        content="The Next Generation Employee Management System"
+                        style={{
+                            fontSize: "1.7em",
+                            fontWeight: "normal",
+                            marginTop: "1.5em",
+                            marginBottom: "1em"
+                        }}
+                    />
+                    {this.props.loading ?
+                        <Loader active inline="centered" size="massive" /> :
+                        <ModalUI header="Sign In"
+                            signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
+                            formvalid={formValid}
+                            showNotice={this.showNotice}
+                            reset={this.resetSignIn}
+                            category="Get Started"
+                            size="huge"
+                            modalSize="tiny"
+                            color="black"
+                            basic
+                        >
+                            {form}
+                        </ModalUI>}
                 </Container>
+                <Divider hidden />
+                <Footer />
             </React.Fragment>
         );
     }
