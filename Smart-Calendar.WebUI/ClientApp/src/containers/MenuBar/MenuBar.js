@@ -49,7 +49,7 @@ class Menubar extends Component {
         user: '',
         newleaves: null
     }
-    
+
     componentDidMount() {
 
         this.props.onGetUser(this.props.accountId);
@@ -75,21 +75,19 @@ class Menubar extends Component {
     }
 
     updateLeaveInfo = (updatedleaves) => {
-        this.setState({ newleaves: updatedleaves }); 
+        this.setState({ newleaves: updatedleaves });
     }
+
     handleupdateleave = () => {
         var leaves = this.state.newleaves;
-        debugger
-        console.log(leaves);
-        
-            axios
-                .put("https://localhost:44314/api/calendar/LeaveRequest", leaves)
-                .then(response => {
-                    debugger
-                    console.log(response.data.value);
-                    this.setState({ leaves: response.data.value });
-                    console.log("Updated");
-                })
+        axios
+            .put("https://localhost:44314/api/calendar/LeaveRequest", leaves)
+            .then(response => {
+                this.setState({ leaves: response.data.value });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     deleteLeaveInfo = (id) => {
@@ -106,23 +104,23 @@ class Menubar extends Component {
             });
     }
     handlenewleavedata = (value) => {
-       
+
         axios({
             method: 'post',
             url: 'https://localhost:44314/api/Calendar/LeaveRequest',
             data: value
         }).then(res => {
-            if(this.props.roleId === '1') {
+            if (this.props.roleId === '1') {
                 console.log(res.data.value);
             }
             else {
                 var Allleaves = res.data.value;
-            var userleaves = Allleaves.filter(leave => leave.userId === this.props.currentUser.userId);
-            console.log(userleaves);
-            this.setState({ leaves: userleaves });
+                var userleaves = Allleaves.filter(leave => leave.userId === this.props.currentUser.userId);
+                console.log(userleaves);
+                this.setState({ leaves: userleaves });
             }
         });
-      
+
     }
     handleFormChange = (e, { name, value }) => {
         this.setState({
@@ -231,10 +229,10 @@ class Menubar extends Component {
                         <SearchBox searchChange={this.props.onSearchChange} />
                     </Menu.Item>
                     <Menu.Item>
-                            {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
-                                <AddAccount onFormChange={this.handleFormChange} formControls={this.state} />
-                            </ModalUI>
-                            }
+                        {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
+                            <AddAccount onFormChange={this.handleFormChange} formControls={this.state} />
+                        </ModalUI>
+                        }
                         <ModalUI icon="male" inverted circular header="Leave Request List"
                             updateLeaveInfo={this.handleupdateleave} reset={() => null} formvalid>
                             <LeaveRequests leaves={this.state.leaves}
@@ -243,8 +241,8 @@ class Menubar extends Component {
                                 updateleavest={this.updateLeaveInfo}
                                 roleId={this.props.roleId}
                                 currentuser={this.props.currentUser}
-                                />
-                            </ModalUI>
+                            />
+                        </ModalUI>
 
                         <Dropdown trigger={<Button icon="settings" inverted circular size="tiny" />} floating icon={null}>
                             <Dropdown.Menu style={{ left: "auto", right: 0, fontSize: "1.3em" }}>
@@ -257,7 +255,7 @@ class Menubar extends Component {
                                 </Dropdown.Item>
                                 <Dropdown.Item>
                                     <ModalUI trigger="category" modalSize="tiny" header="Account Settings" category="Account" accountSettings={() => this.props.onUpdateUserInfo(this.state.updatedUser)} formvalid={accountSettingValid} showNotice={this.showNotice} reset={this.resetState}>
-                                        <AccountSettings currentUser={this.props.currentUser} accountEmail={this.props.accountEmail} getUpdatedUser={this.getUpdatedUser} showFormNotice={this.state.showFormNotice}/>
+                                        <AccountSettings currentUser={this.props.currentUser} accountEmail={this.props.accountEmail} getUpdatedUser={this.getUpdatedUser} showFormNotice={this.state.showFormNotice} />
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
@@ -267,7 +265,7 @@ class Menubar extends Component {
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                    </Menu.Item>         
+                    </Menu.Item>
                 </Menu>
             </React.Fragment>
         );
