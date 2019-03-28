@@ -69,7 +69,10 @@ namespace Smart_Calendar.WebUI.Controllers
         public async Task<IActionResult> GetUserInfo(Guid id)
         {
             var user = _userRepo.Get(d => d.AccountId == id).SingleOrDefault();
-            
+            //if (user == null)
+            //{
+            //    return NotFound();
+            //}
             return Ok(user);
         }
 
@@ -116,6 +119,8 @@ namespace Smart_Calendar.WebUI.Controllers
             }
             return Ok(await GetUserList());
         }
+
+        
 
         [HttpPut("UserPartial/{userId}")]
         public async Task<IActionResult> UpdateUserPartial([FromBody]UpdateUserPartialDto updatedUser)

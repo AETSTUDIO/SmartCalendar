@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import moment from "moment";
-import { Menu, Icon, Header, Input, Button, Dropdown } from "semantic-ui-react";
+import { Menu, Icon, Header, Button, Dropdown } from "semantic-ui-react";
 import ModalUI from "../../components/UI/ModalUI";
+import SearchBox from "../../components/Search/SearchBox";
 import AddAccount from "../../components/UserInfo/AddAccount/AddAccount";
 import EditProfile from "../Profile/EditProfile";
 import AccountSettings from "../Profile/AccountSettings";
@@ -11,7 +12,6 @@ import LeaveRequests from "../LeaveRequests/LeaveRequests";
 import * as actions from "../../store/actions/index";
 import { checkValidity } from "../../shared/validation";
 import axios from 'axios';
-
 
 class Menubar extends Component {
     state = {
@@ -112,10 +112,8 @@ class Menubar extends Component {
             url: 'https://localhost:44314/api/Calendar/LeaveRequest',
             data: value
         }).then(res => {
-            //debugger
             if(this.props.roleId === '1') {
                 console.log(res.data.value);
-                //this.setState({ leaves: res.data.value });
             }
             else {
                 var Allleaves = res.data.value;
@@ -198,15 +196,12 @@ class Menubar extends Component {
     }
 
     render() {
-        //debugger
-        //let user = '';
         const today = moment().format("DD MMMM YYYY, dddd");
         const currentWeek = moment().weeks();
         let isDisplay = this.props.roleId === "1";
         let addAccountValid = this.state.email.value && this.state.password.value && this.state.roleId.value &&
             this.state.email.valid && this.state.password.valid && !this.state.duplicatedEmail;
-        let accountSettingValid = this.state.updatedUser.firstName && this.state.updatedUser.lastName;
-        //if (isDisplay) { user = 'Admin'}
+        let accountSettingValid = isDisplay ? this.state.updatedUser.firstName && this.state.updatedUser.lastName : true;
 
         return (
             <React.Fragment>
@@ -233,11 +228,7 @@ class Menubar extends Component {
                         {today}
                     </Menu.Item>
                     <Menu.Item position="right">
-                        <Input
-                            icon="users"
-                            iconPosition="left"
-                            placeholder="Search Staff..."
-                        />
+                        <SearchBox searchChange={this.props.onSearchChange} />
                     </Menu.Item>
                     <Menu.Item>
                             {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
@@ -260,17 +251,17 @@ class Menubar extends Component {
                                 <Dropdown.Header icon="user" content={this.props.accountEmail} />
                                 <Dropdown.Divider />
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" header="Personal Profile" category="Profile" reset={() => null}>
+                                    <ModalUI trigger="category" modalSize="tiny" header="Personal Profile" category="Profile" reset={() => null}>
                                         <EditProfile />
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" header="Account Settings" category="Account" accountSettings={() => this.props.onUpdateUserInfo(this.state.updatedUser)} formvalid={accountSettingValid} showNotice={this.showNotice} reset={this.resetState}>
-                                        <AccountSettings currentUser={this.props.currentUser} accountEmail={this.props.accountEmail} getUpdatedUser={this.getUpdatedUser} showFormNotice={this.state.showFormNotice} />
+                                    <ModalUI trigger="category" modalSize="tiny" header="Account Settings" category="Account" accountSettings={() => this.props.onUpdateUserInfo(this.state.updatedUser)} formvalid={accountSettingValid} showNotice={this.showNotice} reset={this.resetState}>
+                                        <AccountSettings currentUser={this.props.currentUser} accountEmail={this.props.accountEmail} getUpdatedUser={this.getUpdatedUser} showFormNotice={this.state.showFormNotice}/>
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} reset={() => null} formvalid>
+                                    <ModalUI trigger="category" modalSize="tiny" header="Sign Out" category="Sign Out" signout={() => this.props.onSignout()} reset={() => null} formvalid>
                                         <h3>Do you want to sign out?</h3>
                                     </ModalUI>
                                 </Dropdown.Item>
@@ -301,7 +292,8 @@ const mapDispatchToProps = dispatch => {
         onSignout: () => dispatch(actions.logout()),
         onAddAccount: newAccount => dispatch(actions.addAccount(newAccount)),
         onGetUser: id => dispatch(actions.getUserInfo(id)),
-        onUpdateUserInfo: updatedUser => dispatch(actions.updateUserPartial(updatedUser))
+        onUpdateUserInfo: updatedUser => dispatch(actions.updateUserPartial(updatedUser)),
+        onSearchChange: event => dispatch(actions.setSearchField(event.target.value))
     };
 };
 

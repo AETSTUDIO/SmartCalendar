@@ -1,10 +1,8 @@
 ﻿export {
     initTable,
     getUserInfo,
-    addUserInfo,
-    deleteUserInfo,
-    updateUserInfo,
     updateUserPartial,
+    setSearchField,
     addAccount
 } from './staffTable';
 
