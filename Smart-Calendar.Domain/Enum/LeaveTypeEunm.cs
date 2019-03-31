@@ -7,6 +7,6 @@ namespace Smart_Calendar.Domain.Enum
     public enum LeaveTypeEunm
     {
         Sick =1,
-        Casual = 2
+        Casual
     }
 }

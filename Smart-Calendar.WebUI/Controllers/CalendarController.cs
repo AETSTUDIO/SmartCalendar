@@ -22,7 +22,7 @@ namespace Smart_Calendar.WebUI.Controllers
         private readonly IBaseRepo<Account> _accountRepo;
         private readonly IBaseRepo<LeaveRequest> _leaveReqRepo;
 
-        public CalendarController(IBaseRepo<User> userRepo, IBaseRepo<UserShift> userShiftRepo, IBaseRepo<Shift> shiftRepo, IBaseRepo<Account> accountRepo,IBaseRepo<LeaveRequest> leavereqRepo)
+        public CalendarController(IBaseRepo<User> userRepo, IBaseRepo<UserShift> userShiftRepo, IBaseRepo<Shift> shiftRepo, IBaseRepo<Account> accountRepo, IBaseRepo<LeaveRequest> leavereqRepo)
         {
             _userRepo = userRepo;
             _userShiftRepo = userShiftRepo;
@@ -65,6 +65,7 @@ namespace Smart_Calendar.WebUI.Controllers
             }
             return Ok(userList);
         }
+
         [HttpGet("User/{id}")]
         public async Task<IActionResult> GetUserInfo(Guid id)
         {
@@ -120,7 +121,7 @@ namespace Smart_Calendar.WebUI.Controllers
             return Ok(await GetUserList());
         }
 
-        
+
 
         [HttpPut("UserPartial/{userId}")]
         public async Task<IActionResult> UpdateUserPartial([FromBody]UpdateUserPartialDto updatedUser)
@@ -137,7 +138,7 @@ namespace Smart_Calendar.WebUI.Controllers
             };
 
             await _userRepo.UpdateAsync(user);
-            
+
             return Ok(await GetUserList());
         }
 
@@ -157,41 +158,52 @@ namespace Smart_Calendar.WebUI.Controllers
         [HttpGet("LeaveRequest")]
         public async Task<IActionResult> GetLeaveList()
         {
-            var results = await _leaveReqRepo.GetAllAsync(u => u.LeaveRequestId, 
-                u => u.StartDate,u => u.LeaveCategory.LeaveType,
-                u => u.EndDate,u => u.IsApproved);
-            var userresults = await _userRepo.GetAllAsync(u => u.Department,u =>u.FirstName);
+            var results = await _leaveReqRepo.GetAllAsync(u => u.LeaveRequestId,
+                u => u.StartDate, u => u.LeaveCategory.LeaveType,
+                u => u.EndDate, u => u.IsApproved);
+            var userresults = await _userRepo.GetAllAsync(u => u.Department, u => u.FirstName);
             var leaveList = new List<LeaveReqVM>();
 
             var leaveresults = from leave in results
                                join user in userresults on leave.UserId equals user.UserId
-                               select new {leave.LeaveRequestId,leave.StartDate,
-                                   leave.EndDate,leave.IsApproved,leave.LeaveCategory.LeaveType,
-                                   leave.LeaveCategory.LeaveCategoryId,user.UserId,
-                                   user.FirstName,user.Department.Name };
-            foreach ( var leaveinfo in leaveresults ) {
+                               select new
+                               {
+                                   leave.LeaveRequestId,
+                                   leave.StartDate,
+                                   leave.EndDate,
+                                   leave.IsApproved,
+                                   leave.LeaveCategory.LeaveType,
+                                   leave.LeaveCategory.LeaveCategoryId,
+                                   user.UserId,
+                                   user.FirstName,
+                                   user.Department.Name
+                               };
+            foreach (var leaveinfo in leaveresults)
+            {
                 leaveList.Add(new LeaveReqVM
                 {
                     LeaveRequestId = leaveinfo.LeaveRequestId,
                     UserName = leaveinfo.FirstName,
-                   //DepartmentId = leaveinfo.de
-                   Dept = leaveinfo.Name,
-                   Leavetype = leaveinfo.LeaveType,
-                   LeaveCategoryId = leaveinfo.LeaveCategoryId,
-                   StartDate = leaveinfo.StartDate,
-                   EndDate = leaveinfo.EndDate,
-                   Status = leaveinfo.IsApproved,
-                   UserId = leaveinfo.UserId
+                    //DepartmentId = leaveinfo.de
+                    Dept = leaveinfo.Name,
+                    Leavetype = leaveinfo.LeaveType,
+                    LeaveCategoryId = leaveinfo.LeaveCategoryId,
+                    StartDate = leaveinfo.StartDate,
+                    EndDate = leaveinfo.EndDate,
+                    Status = leaveinfo.IsApproved,
+                    UserId = leaveinfo.UserId
                 });
             }
 
             return Ok(leaveList);
         }
+
         [HttpDelete("LeaveRequest/{id}")]
         public async Task<IActionResult> DeleteLeaveInfo(int id)
         {
             return Ok(await _leaveReqRepo.DeleteAsync(d => d.LeaveRequestId == id));
         }
+
         [HttpPost("LeaveRequest")]
         public async Task<IActionResult> AddLeaveInfo([FromBody]LeaveRequest leave)
         {
@@ -200,6 +212,7 @@ namespace Smart_Calendar.WebUI.Controllers
             var leavesInDb = await GetLeaveList();
             return Ok(leavesInDb);
         }
+
         [HttpPut("LeaveRequest")]
         public async Task<IActionResult> UpdateLeaveInfo([FromBody] List<LeaveRequest> leave)
         {
@@ -214,7 +227,7 @@ namespace Smart_Calendar.WebUI.Controllers
                     IsApproved = leavedata.IsApproved,
                     LeaveCategoryId = leavedata.LeaveCategoryId
                 };
-                
+
                 await _leaveReqRepo.UpdateAsync(newleavedata);
             }
             return Ok(await GetLeaveList());
@@ -265,7 +278,7 @@ namespace Smart_Calendar.WebUI.Controllers
         public User users { get; set; }
         public int LeaveRequestId { get; set; }
         public int LeaveCategoryId { get; set; }
-       
+
     }
 
 }

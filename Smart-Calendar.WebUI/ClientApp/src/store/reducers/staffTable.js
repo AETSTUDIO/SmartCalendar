@@ -19,12 +19,13 @@ const getUserInfo = (state, action) => {
     return { ...state, currentUser: action.currentUser };
 };
 
-const addAccountInfo = (state, action) => {
-    return { ...state, accounts: action.newAccounts };
+const updateUserInfo = (state, action) => {
+    return { ...state, users: action.newUsers, currentUser: action.currentUser };
 };
 
 const changeSearchField = (state, action) => {
     return { ...state, searchField: action.searchText };
+};
 
 const addAccountInfo = (state, action) => {
     return { ...state, accounts: action.newAccounts };
@@ -38,6 +39,8 @@ const reducer = (state = initialState, action) => {
             return setAccounts(state, action);
         case actionTypes.GET_USERINFO:
             return getUserInfo(state, action);
+        case actionTypes.UPDATE_USERINFO:
+            return updateUserInfo(state, action);
         case actionTypes.ADD_ACCOUNTINFO:
             return addAccountInfo(state, action);
         case actionTypes.CHANGE_SEARCH_FIELD:

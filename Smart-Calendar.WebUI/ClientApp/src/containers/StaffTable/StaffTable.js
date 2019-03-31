@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Loader, ButtonGroup } from "semantic-ui-react";
+import { Table, ButtonGroup } from "semantic-ui-react";
 import _ from 'lodash';
 import { connect } from "react-redux";
 import TableRow from "../../components/Table/TableRow/TableRow";
@@ -119,8 +119,7 @@ class StaffTable extends Component {
         axios
             .delete("calendar/user/" + id)
             .then(response => {
-                const newData = this.state.data.filter(user => user.id !== id);
-                this.setState({ data: newData });
+                this.setState({ data: this.state.data.filter(user => user.id !== id) });
             })
             .catch(error => {
                 console.log(error);
@@ -194,15 +193,8 @@ class StaffTable extends Component {
     }
 
     render() {
-        let table = <Loader active inline="centered" size="massive" />;
-        let isDisplay = this.props.roleId === "1";
-        let addUserValid = this.state.selectedAccountId.value && this.state.selectedGender.value &&
-            this.state.firstName.valid && this.state.lastName.valid &&
-            this.state.selectedDept.value && this.state.selectedPos.value;
-        let editUserValid = this.state.updatedUser.firstName && this.state.updatedUser.lastName;
-
         const { column, data, direction } = this.state;
-
+        let isDisplay = this.props.roleId === "1";
         const availableAccounts = this.props.accounts.filter(account => data.every(user => user.accountId !== account.accountId));
         let filteredUsers = data.filter(user => user.firstName.toLowerCase().includes(this.props.searchField.toLowerCase()) ||
             user.lastName.toLowerCase().includes(this.props.searchField.toLowerCase()) ||
@@ -211,9 +203,15 @@ class StaffTable extends Component {
             user.position.toLowerCase().includes(this.props.searchField.toLowerCase()) ||
             user.email.toLowerCase().includes(this.props.searchField.toLowerCase()));
 
-        table = (
+        let addUserValid = this.state.selectedAccountId.value && this.state.selectedGender.value &&
+            this.state.firstName.valid && this.state.lastName.valid &&
+            this.state.selectedDept.value && this.state.selectedPos.value;
+        let editUserValid = this.state.updatedUser.firstName && this.state.updatedUser.lastName;
+
+
+        let table = (
             <React.Fragment>
-                <Table sortable celled striped size="large" >
+                <Table sortable celled striped size="large" color="grey" >
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell

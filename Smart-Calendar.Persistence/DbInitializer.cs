@@ -49,7 +49,7 @@ namespace Smart_Calendar.Persistence
         {
             var request = new[]
             {
-                new LeaveRequest {UserId= new Guid("43f0fdea-2b4c-4af7-8389-f442deccef73"), LeaveCategoryId= (int)LeaveTypeEunm.Sick, IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("1 Feb, 2019"), EndDate= DateTime.Parse("2 Feb, 2019")},
+                new LeaveRequest { UserId= new Guid("43f0fdea-2b4c-4af7-8389-f442deccef73"), LeaveCategoryId= (int)LeaveTypeEunm.Sick, IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("1 Feb, 2019"), EndDate= DateTime.Parse("2 Feb, 2019")},
                 new LeaveRequest { UserId= new Guid("cb20b05f-0f53-4eea-9b92-2a2ccbd7468b"), LeaveCategoryId= (int)LeaveTypeEunm.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("4 Feb, 2019"), EndDate= DateTime.Parse("7 Feb, 2019")},
                 new LeaveRequest { UserId= new Guid("c45d233c-a3b4-42b1-a91a-0d044a35c0f2"), LeaveCategoryId= (int)LeaveTypeEunm.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("5 Feb, 2019"), EndDate= DateTime.Parse("6 Feb, 2019")},
                 new LeaveRequest { UserId= new Guid("75840aef-451c-4f0e-ae80-bcd9d7897387"), LeaveCategoryId= (int)LeaveTypeEunm.Sick,IsApproved = LeaveStatusEnum.Rejected,StartDate = DateTime.Parse("6 Feb, 2019"), EndDate= DateTime.Parse("9 Feb, 2019")},
@@ -95,10 +95,12 @@ namespace Smart_Calendar.Persistence
         private void SeedLeaveCategory(SmartCalendarDbContext context)
         {
 
-            var leave = new LeaveCategory { LeaveType = LeaveTypeEunm.Sick.ToString() };
+            var leave = new[] {
+                new LeaveCategory { LeaveType = LeaveTypeEunm.Sick.ToString() },
+                new LeaveCategory { LeaveType = LeaveTypeEunm.Casual.ToString() }
+            };
 
-
-            context.LeaveCategories.Add(leave);
+            context.LeaveCategories.AddRange(leave);
 
             context.SaveChanges();
         }
@@ -118,7 +120,7 @@ namespace Smart_Calendar.Persistence
         {
             var positions = new[]
             {
-                new Position{  Name = PositionEnum.Manger.ToString() },
+                new Position{  Name = PositionEnum.Manager.ToString() },
                 new Position{  Name = PositionEnum.Lead.ToString() },
                 new Position{Name = PositionEnum.Member.ToString() }
             };
@@ -155,8 +157,8 @@ namespace Smart_Calendar.Persistence
                 new User { UserId = new Guid("75840aef-451c-4f0e-ae80-bcd9d7897387"),AccountId = new Guid("50CCCC22-0D81-4BE4-A52F-3A41853D7F70"), FirstName = "firstname 5", LastName = "lastname 5" , Gender = "Male", DepartmentId = (int)DepartmentEnum.Accounting, PositionId = (int)PositionEnum.Member},
                 new User { UserId = new Guid("226223d8-78c6-40ac-8cbd-dfae4fc58a3f"),AccountId = new Guid("E71CB431-2904-47A1-9E5D-7600CC5DC7F2"), FirstName = "firstname 6", LastName = "lastname 6" , Gender = "Female", DepartmentId = (int)DepartmentEnum.Marketing, PositionId = (int)PositionEnum.Member},
                 new User { UserId = new Guid("F9A6EEA1-1D7D-4ECA-9906-A3EF76A0DE4A"),AccountId = new Guid("26A7FFC4-0EA2-4645-ADAC-76FF228CC20E"),FirstName = "firstname 7", LastName = "lastname 7" , Gender = "Female", DepartmentId = (int)DepartmentEnum.It, PositionId = (int)PositionEnum.Member},
-                new User { UserId = new Guid("88A38B02-8DAD-40C9-9856-5D13BE6BB2F2"),AccountId = new Guid("AC8262A4-20D1-4642-95B1-A2AEFAF65AFA"),FirstName = "firstname 8", LastName = "lastname 8" , Gender = "Female", DepartmentId = (int)DepartmentEnum.Accounting, PositionId = (int)PositionEnum.Manger},
-                new User { UserId = new Guid("BAA26163-1CEB-43F4-B6C0-5BA3CA1B5AFD"), AccountId = new Guid("60E2AFF0-3FE8-40B4-A20F-AAFD5C0CC253"),FirstName = "firstname 9", LastName = "lastname 9" , Gender = "Female", DepartmentId = (int)DepartmentEnum.Marketing, PositionId = (int)PositionEnum.Manger},
+                new User { UserId = new Guid("88A38B02-8DAD-40C9-9856-5D13BE6BB2F2"),AccountId = new Guid("AC8262A4-20D1-4642-95B1-A2AEFAF65AFA"),FirstName = "firstname 8", LastName = "lastname 8" , Gender = "Female", DepartmentId = (int)DepartmentEnum.Accounting, PositionId = (int)PositionEnum.Manager},
+                new User { UserId = new Guid("BAA26163-1CEB-43F4-B6C0-5BA3CA1B5AFD"), AccountId = new Guid("60E2AFF0-3FE8-40B4-A20F-AAFD5C0CC253"),FirstName = "firstname 9", LastName = "lastname 9" , Gender = "Female", DepartmentId = (int)DepartmentEnum.Marketing, PositionId = (int)PositionEnum.Manager},
             };
 
             context.Users.AddRange(users);

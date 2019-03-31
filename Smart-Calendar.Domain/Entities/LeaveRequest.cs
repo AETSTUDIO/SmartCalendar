@@ -15,6 +15,7 @@ namespace Smart_Calendar.Domain.Entities
         public DateTime? EndDate { get; set; }
 
         public LeaveStatusEnum IsApproved { get; set; }
+
         public int LeaveCategoryId { get; set; }
 
         public LeaveCategory LeaveCategory { get; set; }

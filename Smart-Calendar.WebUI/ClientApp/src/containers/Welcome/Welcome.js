@@ -128,7 +128,7 @@ class Welcome extends Component {
                     <Menu.Item position="right" style={{ fontSize: "1.3em" }}>
                         <ModalUI trigger="category" category="Sign In"
                             header="Sign In"
-                            signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
+                            signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
                             formvalid={formValid}
                             showNotice={this.showNotice}
                             reset={this.resetSignIn}
@@ -162,7 +162,7 @@ class Welcome extends Component {
                     {this.props.loading ?
                         <Loader active inline="centered" size="massive" /> :
                         <ModalUI header="Sign In"
-                            signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
+                            signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
                             formvalid={formValid}
                             showNotice={this.showNotice}
                             reset={this.resetSignIn}

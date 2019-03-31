@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, ButtonGroup, Label } from "semantic-ui-react";
+import { Table, ButtonGroup } from "semantic-ui-react";
 import ModalUI from "../../UI/ModalUI";
 import Shift from "../../Shift/Shift";
 import EditUserInfo from "../../UserInfo/EditUserInfo/EditUserInfo";
@@ -7,7 +7,7 @@ import EditUserInfo from "../../UserInfo/EditUserInfo/EditUserInfo";
 const TableRow = props => {
     return (
         <Table.Row>
-            <Table.Cell><Label circular size="tiny" color="red">L</Label> {props.user.firstName.charAt(0).toUpperCase() + props.user.firstName.slice(1)}</Table.Cell>
+            <Table.Cell>{props.user.firstName.charAt(0).toUpperCase() + props.user.firstName.slice(1)}</Table.Cell>
             <Table.Cell>{props.user.lastName.charAt(0).toUpperCase() + props.user.lastName.slice(1)}</Table.Cell>
             <Table.Cell>{props.user.gender}</Table.Cell>
             <Table.Cell>{props.user.department}</Table.Cell>

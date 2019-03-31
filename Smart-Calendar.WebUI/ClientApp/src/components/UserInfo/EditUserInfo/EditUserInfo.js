@@ -15,6 +15,10 @@ class EditUserInfo extends Component {
         userShifts: this.props.user.userShifts
     }
 
+    componentDidMount() {
+        this.props.getUpdatedUser(this.state);
+    }
+
     addShift = (newShift) => {
         this.setState({ userShifts: [...this.state.userShifts, newShift] }, () => this.props.getUpdatedUser(this.state));
     }

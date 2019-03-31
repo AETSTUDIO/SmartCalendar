@@ -9,6 +9,7 @@ import * as actions from "../../store/actions/index";
 class SmartCalender extends Component {
     componentDidMount() {
         this.props.onInitTable();
+        this.props.onGetUser(this.props.accountId);
     }
 
     render() {
@@ -33,13 +34,15 @@ class SmartCalender extends Component {
 const mapStateToProps = state => {
     return {
         users: state.staffTable.users,
-        accounts: state.staffTable.accounts
+        accounts: state.staffTable.accounts,
+        accountId: state.auth.accountId
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onInitTable: () => dispatch(actions.initTable())
+        onInitTable: () => dispatch(actions.initTable()),
+        onGetUser: id => dispatch(actions.getUserInfo(id))
     };
 };
 
