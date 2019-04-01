@@ -1,11 +1,10 @@
 ﻿export {
-    initTable,
+    initUsers,
+    initAccounts,
+    addAccount,
     getUserInfo,
-    addUserInfo,
-    deleteUserInfo,
-    updateUserInfo,
     updateUserPartial,
-    addAccount
+    setSearchField,
 } from './staffTable';
 
 export {

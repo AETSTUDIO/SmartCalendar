@@ -6,7 +6,7 @@ namespace Smart_Calendar.Domain.Enum
 {
     public enum PositionEnum
     {
-        Manger = 1,
+        Manager = 1,
         Lead,
         Member,
     }

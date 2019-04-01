@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { Form, Select, Input, Message } from "semantic-ui-react";
+import { Form, Select, Input, Label } from "semantic-ui-react";
 import Shift from "../../Shift/Shift";
 
 
@@ -13,6 +13,10 @@ class EditUserInfo extends Component {
         departmentId: this.props.user.departmentId,
         positionId: this.props.user.positionId,
         userShifts: this.props.user.userShifts
+    }
+
+    componentDidMount() {
+        this.props.getUpdatedUser(this.state);
     }
 
     addShift = (newShift) => {
@@ -62,10 +66,10 @@ class EditUserInfo extends Component {
                     {this.props.showFormNotice &&
                         <Form.Group widths="equal">
                             <Form.Field>
-                                {!this.state.firstName && <Message size="small" negative>Please enter first name</Message>}
+                            {!this.state.firstName && <Label basic color="red" pointing>Please enter first name</Label>}
                             </Form.Field>
                             <Form.Field>
-                                {!this.state.lastName && <Message size="small" negative>Please enter last name</Message>}
+                            {!this.state.lastName && <Label basic color="red" pointing>Please enter last name</Label>}
                             </Form.Field>
                         </Form.Group>
                     }

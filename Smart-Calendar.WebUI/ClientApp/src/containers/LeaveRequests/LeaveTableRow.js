@@ -1,111 +1,94 @@
-﻿import React, { Component} from "react";
-import { Table, ButtonGroup,Form, Radio } from "semantic-ui-react";
+﻿import React, { Component } from "react";
+import { Table, Button, ButtonGroup, Form, Radio } from "semantic-ui-react";
 import moment from 'moment';
 import ModalUI from "../../components/UI/ModalUI";
 
 class LeaveTableRow extends Component {
-
     state = {
-        leavestatus: 'Pending',
+        showForm: false,
+        leaveStatus: this.props.leaveData.status === 1 ? "Approved" : this.props.leaveData.status === 2 ? "Rejected" : "Pending"
     }
 
-    handleleave = (e, { value}) => {
-        var sts = value;
-        var status = 'Pending';
-       //console.log(sts);
-       
-        if (sts === 'Approved') {
-            status = sts;
-        }
-        if (sts === 'Rejected') {
-            status = sts;
-        }
-        
+    toggleForm = () => {
+        this.setState({ showForm: true });
+    }
+
+    handleChange = (e, { value }) => {
         this.setState({
-            leavestatus: status
+            leaveStatus: value,
+            showForm: false
         }, () => {
-            
-            var updatedrow = {
-                leaveRequestId:this.props.leavedata.leaveRequestId,
-                startDate: this.props.leavedata.startDate,
-                endDate:this.props.leavedata.endDate,
-                leaveCategoryId: this.props.leavedata.leaveCategoryId,
-                userId: this.props.leavedata.userId,
-                isApproved: status, 
-            }
-            this.props.updateleaverow(updatedrow);
-            });
+            let updatedRow = {
+                leaveRequestId: this.props.leaveData.leaveRequestId,
+                startDate: this.props.leaveData.startDate,
+                endDate: this.props.leaveData.endDate,
+                leaveCategoryId: this.props.leaveData.leaveCategoryId,
+                userId: this.props.leaveData.userId,
+                isApproved: this.state.leaveStatus
+            };
+            this.props.updateLeaveInfo(updatedRow);
+        });
     }
-    
 
-    render(){ 
-    
-        let leavest = 'Pending';
-        let isDisplay = this.props.roleId === "1";
-      
-        console.log(this.props.roleId);
-        if (this.props.leavedata.status === 1) { leavest = "Approved" }
-        if (this.props.leavedata.status === 2) { leavest = "Rejected" }
+    render() {
+        let startDate = moment(this.props.leaveData.startDate);
+        let endDate = moment(this.props.leaveData.endDate);
+        let days = endDate.diff(startDate, "days") + 1;
+        let positive = this.state.leaveStatus === "Approved";
+        let negative = this.state.leaveStatus === "Rejected";
+        let warning = this.state.leaveStatus === "Pending";
+        let form = this.props.isDisplay ?
+            (<React.Fragment>
+                <Form.Group>
+                    <Form.Field
+                        control={Radio}
+                        label='Approved'
+                        name='check'
+                        value="Approved"
+                        checked={this.state.leaveStatus === 'Approved'}
+                        onChange={this.handleChange}
+                    />
+                    <Form.Field
+                        control={Radio}
+                        label='Rejected'
+                        name='check'
+                        value="Rejected"
+                        checked={this.state.leaveStatus === 'Rejected'}
+                        onChange={this.handleChange}
+                    />
+                </Form.Group>
+            </React.Fragment>) : this.state.leaveStatus;
 
-    let stdate = parseInt(moment(this.props.leavedata.startDate).format('DD MM YYYY'));
-    let enddate = parseInt(moment(this.props.leavedata.endDate).format('DD MM YYYY'));
-    
-    let days = enddate - stdate + 1;
-    //var member = this.props.user;
-    let user;
-    
-        if (isDisplay) {
-           
-            if (this.props.leavedata.status === 0) {
-                user = <div>
-                    <Form.Group>
-                        <Form.Field  
-                            control={Radio}
-                            label='Approved'
-                            name='check'
-                            value='Approved'
-                            //checked={this.state.leavestatus === 'Approved'}
-                            onChange={this.handleleave} 
-                        />
-                        <Form.Field
-                            control={Radio}
-                            label='Rejected'
-                            name='check'
-                            value='Rejected'
-                            //checked={this.state.leavestatus ==='Rejected'}
-                            onChange={this.handleleave}
-                            />
-                    </Form.Group>
-                </div>
-            }
-            else {
-                user = leavest;
-            }
-    }
-    else {
-        user = <p>{leavest}</p>;
-    }
-   
-    return (
-        <Table.Row>
-            <Table.Cell>{this.props.leavedata.userName}</Table.Cell>
-            <Table.Cell>{this.props.leavedata.dept}</Table.Cell>
-            <Table.Cell>{this.props.leavedata.leavetype}</Table.Cell>
-            <Table.Cell>{moment(this.props.leavedata.startDate).format('DD/MM/YYYY')}</Table.Cell>
-            <Table.Cell>{moment(this.props.leavedata.endDate).format('DD/MM/YYYY')}</Table.Cell>
-            <Table.Cell>{days}</Table.Cell>
-            <Table.Cell>{user}</Table.Cell>  
-            {isDisplay && <Table.Cell>
-                <ButtonGroup >
-                    <ModalUI icon="trash alternate outline"
-                        header="Delete Leave Record"
-                        deleteLeaveInfo={this.props.deleteLeaveinfo}
-                        formvalid>
-                        <h3>Do you want to Delete the Leave Record?</h3>
-                    </ModalUI>
-                </ButtonGroup>
-            </Table.Cell>}
-        </Table.Row>
+        return (
+            <Table.Row>
+                <Table.Cell>{this.props.leaveData.userName.charAt(0).toUpperCase() + this.props.leaveData.userName.slice(1)}</Table.Cell>
+                <Table.Cell>{this.props.leaveData.dept}</Table.Cell>
+                <Table.Cell>{this.props.leaveData.leavetype}</Table.Cell>
+                <Table.Cell>{startDate.format('DD/MM/YYYY')}</Table.Cell>
+                <Table.Cell>{endDate.format('DD/MM/YYYY')}</Table.Cell>
+                <Table.Cell>{days}</Table.Cell>
+                {!this.state.showForm ?
+                    <Table.Cell positive={positive} negative={negative} warning={warning} >{this.state.leaveStatus}
+                        {this.props.isDisplay && <ButtonGroup >
+                            <Button icon="edit" basic onClick={this.toggleForm} />
+                        </ButtonGroup>}
+                    </Table.Cell> :
+                    <Table.Cell>{form}</Table.Cell>
+                }
+                {this.props.isDisplay && <Table.Cell>
+                    <ButtonGroup >
+                        <ModalUI modalSize="tiny" basic icon="trash alternate outline"
+                            header="Delete Leave Record"
+                            deleteLeaveInfo={this.props.deleteLeaveInfo}
+                            formvalid
+                            reset={() => null}
+                        >
+                            <h3>Do you want to Delete the Leave Record?</h3>
+                            <h4>Deleted record CAN NOT be recovered!</h4>
+                        </ModalUI>
+                    </ButtonGroup>
+                </Table.Cell>}
+            </Table.Row>
         );
     }
 }

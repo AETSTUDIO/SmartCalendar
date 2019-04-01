@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Select, Input, Message } from "semantic-ui-react";
+import { Form, Select, Input, Label } from "semantic-ui-react";
 
 
 const AddUserInfo = props => {
@@ -24,6 +24,8 @@ const AddUserInfo = props => {
                 <Form.Group widths="equal">
                     <Form.Field
                         control={Select}
+                        search
+                        selection
                         name="selectedAccountId"
                         label="Staff Email Account"
                         options={props.accounts.map(acc => ({ key: acc.accountId, text: acc.email, value: acc.accountId }))}
@@ -50,13 +52,13 @@ const AddUserInfo = props => {
                 {props.formControls.showFormNotice &&
                     <Form.Group widths="equal">
                         <Form.Field>
-                            {!props.formControls.selectedAccountId.value && <Message size="small" negative>{props.formControls.selectedAccountId.error}</Message>}
+                            {!props.formControls.selectedAccountId.value && <Label basic color="red" pointing>{props.formControls.selectedAccountId.error}</Label>}
                         </Form.Field>
                         <Form.Field>
-                            {!props.formControls.firstName.valid && <Message size="small" negative>{props.formControls.firstName.error}</Message>}
+                        {!props.formControls.firstName.valid && <Label basic color="red" pointing>{props.formControls.firstName.error}</Label>}
                         </Form.Field>
                         <Form.Field>
-                            {!props.formControls.lastName.valid && <Message size="small" negative>{props.formControls.lastName.error}</Message>}
+                        {!props.formControls.lastName.valid && <Label basic color="red" pointing>{props.formControls.lastName.error}</Label>}
                         </Form.Field>
                     </Form.Group>
                 }
@@ -90,13 +92,13 @@ const AddUserInfo = props => {
                 {props.formControls.showFormNotice &&
                     <Form.Group widths="equal">
                         <Form.Field>
-                            {!props.formControls.selectedGender.value && <Message size="small" negative>{props.formControls.selectedGender.error}</Message>}
+                        {!props.formControls.selectedGender.value && <Label basic color="red" pointing>{props.formControls.selectedGender.error}</Label>}
                         </Form.Field>
                         <Form.Field>
-                            {!props.formControls.selectedDept.value && <Message size="small" negative>{props.formControls.selectedDept.error}</Message>}
+                        {!props.formControls.selectedDept.value && <Label basic color="red" pointing>{props.formControls.selectedDept.error}</Label>}
                         </Form.Field>
                         <Form.Field>
-                            {!props.formControls.selectedPos.value && <Message size="small" negative>{props.formControls.selectedPos.error}</Message>}
+                        {!props.formControls.selectedPos.value && <Label basic color="red" pointing>{props.formControls.selectedPos.error}</Label>}
                         </Form.Field>
                     </Form.Group>
                 }

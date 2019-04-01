@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Select, Message } from "semantic-ui-react";
+import { Form, Input, Select, Label } from "semantic-ui-react";
 
 const AddAccount = props => {
     const roleOptions = [
@@ -39,14 +39,14 @@ const AddAccount = props => {
                 {props.formControls.showFormNotice && 
                     <Form.Group widths="equal">
                         <Form.Field>
-                            { !props.formControls.email.valid && <Message size="small" negative>{props.formControls.email.error}</Message> }
-                            {props.formControls.duplicatedEmail && <Message size="small" negative >Email already registered</Message>}
+                        {!props.formControls.email.valid && <Label basic color="red" pointing>{props.formControls.email.error}</Label> }
+                        {props.formControls.duplicatedEmail && <Label basic color="red" pointing>Email already registered</Label>}
                         </Form.Field>
                         <Form.Field>
-                            { !props.formControls.password.valid && <Message size="small" negative>{props.formControls.password.error}</Message>}
+                        {!props.formControls.password.valid && <Label basic color="red" pointing>{props.formControls.password.error}</Label>}
                         </Form.Field>
                         <Form.Field>
-                            {!props.formControls.roleId.value && <Message size="small" negative>{props.formControls.roleId.error}</Message>}
+                        {!props.formControls.roleId.value && <Label basic color="red" pointing>{props.formControls.roleId.error}</Label>}
                         </Form.Field>
                     </Form.Group>}
             </Form>

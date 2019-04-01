@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Input, Header, Message } from "semantic-ui-react";
+import { Form, Input, Header, Label, Message } from "semantic-ui-react";
 
 class AccountSettings extends Component {
 
@@ -13,9 +13,13 @@ class AccountSettings extends Component {
         positionId: this.props.currentUser.positionId
     }
 
+    componentDidMount() {
+        this.props.getUpdatedUser(this.state);
+    }
+
     onFormChange = (e, { name, value }) => {
         this.setState({ [name]: value }, () => this.props.getUpdatedUser(this.state));
-    };
+    }
 
     render() {
         return (
@@ -42,10 +46,10 @@ class AccountSettings extends Component {
                         {this.props.showFormNotice &&
                             <Form.Group widths="equal">
                                 <Form.Field>
-                                    {!this.state.firstName && <Message size="small" negative>Please enter first name</Message>}
+                                {!this.state.firstName && <Label basic color="red" pointing>Please enter first name</Label>}
                                 </Form.Field>
                                 <Form.Field>
-                                    {!this.state.lastName && <Message size="small" negative>Please enter last name</Message>}
+                                {!this.state.lastName && <Label basic color="red" pointing>Please enter last name</Label>}
                                 </Form.Field>
                             </Form.Group>
                         }

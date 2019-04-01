@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { Menu, Header, Form, Input, Container, Divider, Loader, Message } from 'semantic-ui-react';
+import { Menu, Header, Icon, Form, Input, Container, Divider, Loader, Label, Message } from "semantic-ui-react";
 import ModalUI from "../../components/UI/ModalUI";
-import Footer from '../../components/Footer/Footer';
-import banner from "./images/banner.jpg";
+import Footer from "../../components/Footer/Footer";
 import * as actions from "../../store/actions/index";
 import { checkValidity } from "../../shared/validation";
 
@@ -28,7 +27,12 @@ class Welcome extends Component {
             error: "Password must be greater than or equal to 4 digits",
             valid: false
         },
-        showFormNotice: false
+        showFormNotice: false,
+        duplicatedEmail: false
+    }
+
+    componentDidMount() {
+        this.props.onInitAccounts();
     }
 
     handleFormChange = (e, { name, value }) => {
@@ -42,6 +46,12 @@ class Welcome extends Component {
                 )
             },
             showFormNotice: false
+        }, () => {
+            if (!this.props.accounts.every(account => account.email !== this.state.email.value)) {
+                this.setState({ duplicatedEmail: true });
+            } else {
+                this.setState({ duplicatedEmail: false });
+            }
         });
     }
 
@@ -49,7 +59,16 @@ class Welcome extends Component {
         this.setState({ showFormNotice: true });
     }
 
-    resetSignIn = () => {
+    addAccount = () => {
+        let newAccount = {
+            email: this.state.email.value,
+            password: this.state.password.value,
+            roleId: 2
+        };
+        this.props.onAddAccount(newAccount);
+    }
+
+    resetState = () => {
         this.setState({
             email: {
                 value: null,
@@ -69,24 +88,26 @@ class Welcome extends Component {
                 error: "Password must be greater than or equal to 4 digits",
                 valid: false
             },
-            showFormNotice: false
+            showFormNotice: false,
+            duplicatedEmail: false
         });
     }
 
     render() {
 
-        let form = (<React.Fragment>
+        let regForm = (<React.Fragment>
             <Form>
                 <Form.Field
                     control={Input}
-                    name="email"
                     type="email"
+                    name="email"
                     label="Email"
                     placeholder="Email Address"
                     onChange={this.handleFormChange}
                 />
-                {this.state.showFormNotice && !this.state.email.valid && <Message size="small" negative>{this.state.email.error}</Message>}
-
+                {this.state.showFormNotice && !this.state.email.valid && <Label basic color="red" pointing>{this.state.email.error}</Label>}
+                {this.state.duplicatedEmail && <Label basic color="red" pointing>Email already registered</Label>}
+                <Divider hidden />
                 <Form.Field
                     control={Input}
                     type="password"
@@ -95,11 +116,32 @@ class Welcome extends Component {
                     placeholder="Password"
                     onChange={this.handleFormChange}
                 />
-                {this.state.showFormNotice && !this.state.password.valid && <Message size="small" negative>{this.state.password.error}</Message>}
+                {this.state.showFormNotice && !this.state.password.valid && <Label basic color="red" pointing>{this.state.password.error}</Label>}
             </Form>
-            <div className="text center form-footer">
-                <a>Forgot your Password?</a>
-            </div>
+        </React.Fragment>);
+
+        let signInForm = (<React.Fragment>
+            <Form>
+                <Form.Field
+                    control={Input}
+                    type="email"
+                    name="email"
+                    label="Email"
+                    placeholder="Email Address"
+                    onChange={this.handleFormChange}
+                />
+                {this.state.showFormNotice && !this.state.email.valid && <Label basic color="red" pointing>{this.state.email.error}</Label>}
+                <Divider hidden />
+                <Form.Field
+                    control={Input}
+                    type="password"
+                    name="password"
+                    label="Password"
+                    placeholder="Password"
+                    onChange={this.handleFormChange}
+                />
+                {this.state.showFormNotice && !this.state.password.valid && <Label basic color="red" pointing>{this.state.password.error}</Label>}
+            </Form>
         </React.Fragment>);
 
         let errorMessage = this.props.error &&
@@ -110,55 +152,89 @@ class Welcome extends Component {
                 header="Credentials not valid"
             />;
 
-        let formValid = this.state.email.valid && this.state.password.valid;
+        let signInValid = this.state.email.valid && this.state.password.valid;
+        let registerValid = this.state.email.valid && this.state.password.valid && !this.state.duplicatedEmail;
 
         return (
             <React.Fragment>
                 {this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
                 <Menu fluid secondary>
-                    <Menu.Item position="right">
+                    <Menu.Item >
                         <Header as="h1" size="large">
+                            <Icon name="calendar alternate outline" />
                             <Header.Content>
-                                Welcome to Smart Calendar
-                            <Header.Subheader>
-                                    The Next Generation EMS
-                            </Header.Subheader>
+                                Smart Calendar
                             </Header.Content>
                         </Header>
                     </Menu.Item>
-                    <Menu.Item position="right">
-                        <ModalUI category="Sign In"
+
+                    <Menu.Item position="right" style={{ fontSize: "1.3em" }}>
+                        <ModalUI trigger="category" category="Sign In"
                             header="Sign In"
-                            color="blue"
-                            signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
-                            basic={false}
-                            inverted
-                            formvalid={formValid}
+                            signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
+                            formvalid={signInValid}
                             showNotice={this.showNotice}
-                            reset={this.resetSignIn}
+                            reset={this.resetState}
+                            modalSize="tiny"
                         >
-                            {form}
+                            {signInForm}
                         </ModalUI>
                     </Menu.Item>
                 </Menu>
 
                 {errorMessage}
-                {this.props.loading ?
-                    <Loader active inline="centered" size="massive" /> :
-                    <ModalUI header="Sign In"
-                        trigger="image"
-                        image={banner}
-                        signin={() => this.props.onAuth(this.state.email.value, this.state.password.value)}
-                        formvalid={formValid}
-                        showNotice={this.showNotice}
-                        reset={this.resetSignIn}
-                    >
-                        {form}
-                    </ModalUI>}
-                <Divider hidden />
                 <Container>
-                    <Footer />
+                    <Header as="h1"
+                        content="Welcome to Smart Calendar"
+                        style={{
+                            fontSize: "4em",
+                            fontWeight: "normal",
+                            marginBottom: 0,
+                            marginTop: "1em"
+                        }}
+                    />
+                    <Header as="h2"
+                        content="The Next Generation Employee Management System"
+                        style={{
+                            fontSize: "1.7em",
+                            fontWeight: "normal",
+                            marginTop: "1.5em",
+                            marginBottom: "1em"
+                        }}
+                    />
+                    {this.props.loading ?
+                        <Loader active inline="centered" size="massive" /> :
+                        <div>
+                            <ModalUI header="Create Account"
+                                category="New Account"
+                                color="blue"
+                                size="huge"
+                                modalSize="tiny"
+                                addAccount={this.addAccount}
+                                formvalid={registerValid}
+                                showNotice={this.showNotice}
+                                reset={this.resetState}
+                            >
+                                {regForm}
+                            </ModalUI>
+                            <ModalUI header="Sign In"
+                                signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
+                                formvalid={signInValid}
+                                showNotice={this.showNotice}
+                                reset={this.resetState}
+                                category="Existing User"
+                                size="huge"
+                                modalSize="tiny"
+                                color="black"
+                                basic
+                            >
+                                {signInForm}
+                            </ModalUI>
+                        </div>
+                    }
                 </Container>
+                <Divider hidden />
+                <Footer />
             </React.Fragment>
         );
     }
@@ -170,13 +246,16 @@ const mapStateToProps = state => {
         loading: state.auth.loading,
         error: state.auth.error,
         isAuthenticated: state.auth.token !== null,
-        authRedirectPath: state.auth.authRedirectPath
+        authRedirectPath: state.auth.authRedirectPath,
+        accounts: state.staffTable.accounts
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch(actions.auth(email, password))
+        onAuth: (email, password) => dispatch(actions.auth(email, password)),
+        onInitAccounts: () => dispatch(actions.initAccounts()),
+        onAddAccount: newAccount => dispatch(actions.addAccount(newAccount))
     };
 };
 
