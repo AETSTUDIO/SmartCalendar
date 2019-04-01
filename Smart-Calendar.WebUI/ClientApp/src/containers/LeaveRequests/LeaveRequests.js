@@ -27,7 +27,7 @@ class LeaveRequests extends Component {
 
     addLeaveInfo = () => {
         let leaveData = {
-            userId: this.props.currentuser.userId,
+            userId: this.props.currentUser.userId,
             startDate: this.state.startDate,
             endDate: this.state.endDate,
             isApproved: "Pending",

@@ -1,9 +1,10 @@
 ﻿export {
-    initTable,
+    initUsers,
+    initAccounts,
+    addAccount,
     getUserInfo,
     updateUserPartial,
     setSearchField,
-    addAccount
 } from './staffTable';
 
 export {

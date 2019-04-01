@@ -84,6 +84,7 @@ class LeaveTableRow extends Component {
                             reset={() => null}
                         >
                             <h3>Do you want to Delete the Leave Record?</h3>
+                            <h4>Deleted record CAN NOT be recovered!</h4>
                         </ModalUI>
                     </ButtonGroup>
                 </Table.Cell>}

@@ -13,9 +13,13 @@ class AccountSettings extends Component {
         positionId: this.props.currentUser.positionId
     }
 
+    componentDidMount() {
+        this.props.getUpdatedUser(this.state);
+    }
+
     onFormChange = (e, { name, value }) => {
         this.setState({ [name]: value }, () => this.props.getUpdatedUser(this.state));
-    };
+    }
 
     render() {
         return (

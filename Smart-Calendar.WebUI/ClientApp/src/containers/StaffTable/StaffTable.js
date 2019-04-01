@@ -99,8 +99,8 @@ class StaffTable extends Component {
     addUserInfo = () => {
         const userInfo = {
             accountId: this.state.selectedAccountId.value,
-            firstName: this.state.firstName.value,
-            lastName: this.state.lastName.value,
+            firstName: this.state.firstName.value.charAt(0).toUpperCase() + this.state.firstName.value.slice(1).toLowerCase(),
+            lastName: this.state.lastName.value.charAt(0).toUpperCase() + this.state.lastName.value.slice(1).toLowerCase(),
             gender: this.state.selectedGender.value,
             departmentId: this.state.selectedDept.value,
             positionId: this.state.selectedPos.value
@@ -193,6 +193,7 @@ class StaffTable extends Component {
     }
 
     render() {
+        
         const { column, data, direction } = this.state;
         let isDisplay = this.props.roleId === "1";
         const availableAccounts = this.props.accounts.filter(account => data.every(user => user.accountId !== account.accountId));
@@ -295,7 +296,8 @@ const mapStateToProps = state => {
     return {
         searchField: state.staffTable.searchField,
         roleId: state.auth.roleId,
-        accountId: state.auth.accountId
+        accountId: state.auth.accountId,
+        accounts: state.staffTable.accounts
     };
 };
 

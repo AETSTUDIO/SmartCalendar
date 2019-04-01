@@ -60,6 +60,39 @@ class Menubar extends Component {
             });
     }
 
+    handleFormChange = (e, { name, value }) => {
+        this.setState({
+            [name]: {
+                ...this.state[name],
+                value: value,
+                valid: checkValidity(
+                    value,
+                    this.state[name].validation
+                )
+            },
+            showFormNotice: false
+        }, () => {
+            if (!this.props.accounts.every(account => account.email !== this.state.email.value)) {
+                this.setState({ duplicatedEmail: true });
+            } else {
+                this.setState({ duplicatedEmail: false });
+            }
+        });
+    }
+
+    addAccount = () => {
+        let newAccount = {
+            email: this.state.email.value,
+            password: this.state.password.value,
+            roleId: this.state.roleId.value
+        };
+        this.props.onAddAccount(newAccount);
+    }
+
+    getUpdatedUser = (updatedUser) => {
+        this.setState({ updatedUser: updatedUser });
+    }
+
     updateLeaveInfo = (updatedLeaves) => {
         this.setState({ updatedLeaves: updatedLeaves });
     }
@@ -102,38 +135,6 @@ class Menubar extends Component {
             .catch(error => {
                 console.log(error);
             });
-    }
-
-    handleFormChange = (e, { name, value }) => {
-        this.setState({
-            [name]: {
-                ...this.state[name],
-                value: value,
-                valid: checkValidity(
-                    value,
-                    this.state[name].validation
-                )
-            },
-            showFormNotice: false
-        }, () => {
-            if (!this.props.accounts.every(account => account.email !== this.state.email.value)) {
-                this.setState({ duplicatedEmail: true });
-            }
-        });
-
-    }
-
-    addAccount = () => {
-        let newAccount = {
-            email: this.state.email.value,
-            password: this.state.password.value,
-            roleId: this.state.roleId.value
-        };
-        this.props.onAddAccount(newAccount);
-    }
-
-    getUpdatedUser = (updatedUser) => {
-        this.setState({ updatedUser: updatedUser });
     }
 
     showNotice = () => {
@@ -214,7 +215,7 @@ class Menubar extends Component {
                         <SearchBox searchChange={this.props.onSearchChange} />
                     </Menu.Item>
                     <Menu.Item>
-                        {isDisplay && <ModalUI icon="add user" circular inverted header="Add Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
+                        {isDisplay && <ModalUI icon="add user" circular inverted header="Create Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
                             <AddAccount onFormChange={this.handleFormChange} formControls={this.state} />
                         </ModalUI>
                         }
@@ -239,7 +240,7 @@ class Menubar extends Component {
                                     </ModalUI>
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" modalSize="tiny" header="Account Settings" category="Account" accountSettings={() => this.props.onUpdateUserInfo(this.state.updatedUser)} formvalid={accountSettingValid} showNotice={this.showNotice} reset={this.resetState}>
+                                    <ModalUI trigger="category" modalSize="tiny" header="Account Settings" category="Account Settings" accountSettings={() => this.props.onUpdateUserInfo(this.state.updatedUser)} formvalid={accountSettingValid} showNotice={this.showNotice} reset={this.resetState}>
                                         <AccountSettings currentUser={this.props.currentUser} accountEmail={this.props.accountEmail} getUpdatedUser={this.getUpdatedUser} showFormNotice={this.state.showFormNotice} />
                                     </ModalUI>
                                 </Dropdown.Item>

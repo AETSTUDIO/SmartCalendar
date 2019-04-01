@@ -27,7 +27,12 @@ class Welcome extends Component {
             error: "Password must be greater than or equal to 4 digits",
             valid: false
         },
-        showFormNotice: false
+        showFormNotice: false,
+        duplicatedEmail: false
+    }
+
+    componentDidMount() {
+        this.props.onInitAccounts();
     }
 
     handleFormChange = (e, { name, value }) => {
@@ -41,6 +46,12 @@ class Welcome extends Component {
                 )
             },
             showFormNotice: false
+        }, () => {
+            if (!this.props.accounts.every(account => account.email !== this.state.email.value)) {
+                this.setState({ duplicatedEmail: true });
+            } else {
+                this.setState({ duplicatedEmail: false });
+            }
         });
     }
 
@@ -48,7 +59,16 @@ class Welcome extends Component {
         this.setState({ showFormNotice: true });
     }
 
-    resetSignIn = () => {
+    addAccount = () => {
+        let newAccount = {
+            email: this.state.email.value,
+            password: this.state.password.value,
+            roleId: 2
+        };
+        this.props.onAddAccount(newAccount);
+    }
+
+    resetState = () => {
         this.setState({
             email: {
                 value: null,
@@ -68,18 +88,44 @@ class Welcome extends Component {
                 error: "Password must be greater than or equal to 4 digits",
                 valid: false
             },
-            showFormNotice: false
+            showFormNotice: false,
+            duplicatedEmail: false
         });
     }
 
     render() {
 
-        let form = (<React.Fragment>
+        let regForm = (<React.Fragment>
             <Form>
                 <Form.Field
                     control={Input}
-                    name="email"
                     type="email"
+                    name="email"
+                    label="Email"
+                    placeholder="Email Address"
+                    onChange={this.handleFormChange}
+                />
+                {this.state.showFormNotice && !this.state.email.valid && <Label basic color="red" pointing>{this.state.email.error}</Label>}
+                {this.state.duplicatedEmail && <Label basic color="red" pointing>Email already registered</Label>}
+                <Divider hidden />
+                <Form.Field
+                    control={Input}
+                    type="password"
+                    name="password"
+                    label="Password"
+                    placeholder="Password"
+                    onChange={this.handleFormChange}
+                />
+                {this.state.showFormNotice && !this.state.password.valid && <Label basic color="red" pointing>{this.state.password.error}</Label>}
+            </Form>
+        </React.Fragment>);
+
+        let signInForm = (<React.Fragment>
+            <Form>
+                <Form.Field
+                    control={Input}
+                    type="email"
+                    name="email"
                     label="Email"
                     placeholder="Email Address"
                     onChange={this.handleFormChange}
@@ -96,10 +142,6 @@ class Welcome extends Component {
                 />
                 {this.state.showFormNotice && !this.state.password.valid && <Label basic color="red" pointing>{this.state.password.error}</Label>}
             </Form>
-            <Divider hidden />
-            <div className="text center form-footer">
-                <a>New employee? Please contact admin for a registration form</a>
-            </div>
         </React.Fragment>);
 
         let errorMessage = this.props.error &&
@@ -110,7 +152,8 @@ class Welcome extends Component {
                 header="Credentials not valid"
             />;
 
-        let formValid = this.state.email.valid && this.state.password.valid;
+        let signInValid = this.state.email.valid && this.state.password.valid;
+        let registerValid = this.state.email.valid && this.state.password.valid && !this.state.duplicatedEmail;
 
         return (
             <React.Fragment>
@@ -129,12 +172,12 @@ class Welcome extends Component {
                         <ModalUI trigger="category" category="Sign In"
                             header="Sign In"
                             signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
-                            formvalid={formValid}
+                            formvalid={signInValid}
                             showNotice={this.showNotice}
-                            reset={this.resetSignIn}
+                            reset={this.resetState}
                             modalSize="tiny"
                         >
-                            {form}
+                            {signInForm}
                         </ModalUI>
                     </Menu.Item>
                 </Menu>
@@ -161,19 +204,34 @@ class Welcome extends Component {
                     />
                     {this.props.loading ?
                         <Loader active inline="centered" size="massive" /> :
-                        <ModalUI header="Sign In"
-                            signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
-                            formvalid={formValid}
-                            showNotice={this.showNotice}
-                            reset={this.resetSignIn}
-                            category="Get Started"
-                            size="huge"
-                            modalSize="tiny"
-                            color="black"
-                            basic
-                        >
-                            {form}
-                        </ModalUI>}
+                        <div>
+                            <ModalUI header="Create Account"
+                                category="New Account"
+                                color="blue"
+                                size="huge"
+                                modalSize="tiny"
+                                addAccount={this.addAccount}
+                                formvalid={registerValid}
+                                showNotice={this.showNotice}
+                                reset={this.resetState}
+                            >
+                                {regForm}
+                            </ModalUI>
+                            <ModalUI header="Sign In"
+                                signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
+                                formvalid={signInValid}
+                                showNotice={this.showNotice}
+                                reset={this.resetState}
+                                category="Existing User"
+                                size="huge"
+                                modalSize="tiny"
+                                color="black"
+                                basic
+                            >
+                                {signInForm}
+                            </ModalUI>
+                        </div>
+                    }
                 </Container>
                 <Divider hidden />
                 <Footer />
@@ -188,13 +246,16 @@ const mapStateToProps = state => {
         loading: state.auth.loading,
         error: state.auth.error,
         isAuthenticated: state.auth.token !== null,
-        authRedirectPath: state.auth.authRedirectPath
+        authRedirectPath: state.auth.authRedirectPath,
+        accounts: state.staffTable.accounts
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch(actions.auth(email, password))
+        onAuth: (email, password) => dispatch(actions.auth(email, password)),
+        onInitAccounts: () => dispatch(actions.initAccounts()),
+        onAddAccount: newAccount => dispatch(actions.addAccount(newAccount))
     };
 };
 

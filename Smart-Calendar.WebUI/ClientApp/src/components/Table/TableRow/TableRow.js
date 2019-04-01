@@ -7,8 +7,8 @@ import EditUserInfo from "../../UserInfo/EditUserInfo/EditUserInfo";
 const TableRow = props => {
     return (
         <Table.Row>
-            <Table.Cell>{props.user.firstName.charAt(0).toUpperCase() + props.user.firstName.slice(1)}</Table.Cell>
-            <Table.Cell>{props.user.lastName.charAt(0).toUpperCase() + props.user.lastName.slice(1)}</Table.Cell>
+            <Table.Cell>{props.user.firstName}</Table.Cell>
+            <Table.Cell>{props.user.lastName}</Table.Cell>
             <Table.Cell>{props.user.gender}</Table.Cell>
             <Table.Cell>{props.user.department}</Table.Cell>
             <Table.Cell>{props.user.position}</Table.Cell>

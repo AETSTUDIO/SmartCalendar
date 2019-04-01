@@ -18,7 +18,7 @@ class ModalUI extends Component {
                     return this.props.addEmployeeInfo();
                 case "Edit Employee Info":
                     return this.props.editEmployeeInfo();
-                case "Add Account":
+                case "Create Account":
                     return this.props.addAccount();
                 case "Account Settings":
                     return this.props.accountSettings();
