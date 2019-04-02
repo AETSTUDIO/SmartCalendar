@@ -102,6 +102,8 @@ class Welcome extends Component {
                     type="email"
                     name="email"
                     label="Email"
+                    icon="mail"
+                    iconPosition='left'
                     placeholder="Email Address"
                     onChange={this.handleFormChange}
                 />
@@ -113,6 +115,8 @@ class Welcome extends Component {
                     type="password"
                     name="password"
                     label="Password"
+                    icon="lock"
+                    iconPosition='left'
                     placeholder="Password"
                     onChange={this.handleFormChange}
                 />
@@ -127,6 +131,8 @@ class Welcome extends Component {
                     type="email"
                     name="email"
                     label="Email"
+                    icon="mail"
+                    iconPosition='left'
                     placeholder="Email Address"
                     onChange={this.handleFormChange}
                 />
@@ -137,6 +143,8 @@ class Welcome extends Component {
                     type="password"
                     name="password"
                     label="Password"
+                    icon="lock"
+                    iconPosition='left'
                     placeholder="Password"
                     onChange={this.handleFormChange}
                 />
