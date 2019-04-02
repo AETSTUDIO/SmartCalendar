@@ -190,7 +190,7 @@ class Menubar extends Component {
         return (
             <React.Fragment>
                 {!this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
-                <Menu secondary>
+                <Menu secondary stackable>
                     <Menu.Item >
                         <Header as="h1" size="large">
                             <Icon name="calendar alternate outline" />
@@ -204,23 +204,23 @@ class Menubar extends Component {
                     </Menu.Item>
                 </Menu>
 
-                <Menu inverted size="tiny" borderless>
-                    <Menu.Item style={{ "fontSize": "1.3em" }}>
+                <Menu size="small" borderless stackable style={{ background: "rgba(45, 45, 45, 0.98)"}}>
+                    <Menu.Item style={{ color:"white", fontSize: "1.3em" }}>
                         Current Week: {currentWeek}
                     </Menu.Item>
-                    <Menu.Item style={{ "fontSize": "1.3em" }}>
+                    <Menu.Item style={{ color: "white", fontSize: "1.3em" }}>
                         {today}
                     </Menu.Item>
                     <Menu.Item position="right">
                         <SearchBox searchChange={this.props.onSearchChange} />
                     </Menu.Item>
                     <Menu.Item>
-                        {isDisplay && <ModalUI icon="add user" circular inverted header="Create Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
+                        {isDisplay && <ModalUI icon="add user" circular inverted animated header="Create Account" category="Create Account" addAccount={this.addAccount} formvalid={addAccountValid} showNotice={this.showNotice} reset={this.resetState}>
                             <AddAccount onFormChange={this.handleFormChange} formControls={this.state} />
                         </ModalUI>
                         }
 
-                        <ModalUI icon="plane" modalSize="large" inverted circular header="Leave Request List" updateLeaveInfo={this.handleUpdateLeave} reset={() => null} formvalid>
+                        <ModalUI icon="plane" modalSize="large" circular inverted animated header="Leave Request List" category="Leave Requests" updateLeaveInfo={this.handleUpdateLeave} reset={() => null} formvalid>
                             <LeaveRequests leaves={leaves}
                                 currentUser={this.props.currentUser}
                                 deleteLeave={this.deleteLeaveInfo}
@@ -230,7 +230,17 @@ class Menubar extends Component {
                             />
                         </ModalUI>
 
-                        <Dropdown trigger={<Button icon="settings" inverted circular size="tiny" />} floating icon={null}>
+                        <Dropdown floating icon={null} trigger={
+                            <Button animated="vertical" circular inverted size="small">
+                                <Button.Content visible>
+                                    Personal Info
+                                </Button.Content>
+                                <Button.Content hidden>
+                                    <Icon name="settings" />
+                                </Button.Content>
+                            </Button>
+                        }
+                        >
                             <Dropdown.Menu style={{ left: "auto", right: 0, fontSize: "1.3em" }}>
                                 <Dropdown.Header icon="user" content={this.props.accountEmail} />
                                 <Dropdown.Divider />
@@ -250,7 +260,7 @@ class Menubar extends Component {
                                     </ModalUI>
                                 </Dropdown.Item>
                             </Dropdown.Menu>
-                        </Dropdown>
+                            </Dropdown>
                     </Menu.Item>
                 </Menu>
             </React.Fragment>

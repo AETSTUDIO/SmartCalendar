@@ -27,7 +27,7 @@ const AddUserInfo = props => {
                         search
                         selection
                         name="selectedAccountId"
-                        label="Staff Email Account"
+                        label="Employee Email Account"
                         options={props.accounts.map(acc => ({ key: acc.accountId, text: acc.email, value: acc.accountId }))}
                         placeholder="Select an Account"
                         onChange={props.onFormChange}

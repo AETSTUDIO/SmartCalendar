@@ -1,37 +1,61 @@
 import React from 'react';
-import { Container, Grid, Segment, List, Header } from 'semantic-ui-react';
+import { Container, Grid, Segment, List, Header, Image } from 'semantic-ui-react';
+import terry from "../../shared/Terry Wang.jpg";
+import rad from "../../shared/Radhika.jpg";
+import dan from "../../shared/Daniel.jpg";
 
 
 const Footer = () => (
-    <Segment inverted vertical style={{ padding: '5em 0em' }}>
+    <Segment vertical style={{
+        padding: '3em 0em',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        marginBottom: 0,
+        background: "rgba(45, 45, 45, 0.98)"
+    }}
+    >
         <Container>
-            <Grid divided inverted stackable>
+            <Grid divided stackable>
                 <Grid.Row>
                     <Grid.Column width={3}>
-                        <Header inverted as='h4' content='About' />
-                        <List link inverted>
-                            <List.Item as='a'>Sitemap</List.Item>
-                            <List.Item as='a'>Contact Us</List.Item>
-                            <List.Item as='a'>Religious Ceremonies</List.Item>
-                            <List.Item as='a'>Gazebo Plans</List.Item>
+                        <Header inverted as='h3' content='Technologies' />
+                        <List link>
+                            <List.Item href="https://reactjs.org/" style={{color: "white"}}>React</List.Item>
+                            <List.Item href="https://dotnet.microsoft.com/" style={{ color: "white" }}>ASP.NET Core</List.Item>
+                            <List.Item href="https://react.semantic-ui.com/" style={{ color: "white" }}>Semantic UI React</List.Item>
+                            <List.Item href="https://www.microsoft.com/en-au/sql-server/sql-server-2017" style={{ color: "white" }}>Microsoft SQL Server</List.Item>
                         </List>
                     </Grid.Column>
-                    <Grid.Column width={3}>
-                        <Header inverted as='h4' content='Services' />
-                        <List link inverted>
-                            <List.Item as='a'>Banana Pre-Order</List.Item>
-                            <List.Item as='a'>DNA FAQ</List.Item>
-                            <List.Item as='a'>How To Access</List.Item>
-                            <List.Item as='a'>Favorite X-Men</List.Item>
-                        </List>
-                    </Grid.Column>
-                    <Grid.Column width={7}>
-                        <Header as='h4' inverted>
+                    
+                    <Grid.Column width={13}>
+                        <Header as='h3' inverted>
                             Core Developers
                         </Header>
-                        <p>
-                            Extra space for developer Photos
-                        </p>
+                        <List horizontal>
+                            <List.Item>
+                                <Image src={dan} size="tiny" avatar />
+                                <List.Content>
+                                    <h4><a href="https://www.linkedin.com/in/dotnet-daniel-choi/" style={{ color: "white" }}>Daniel Choi</a></h4>
+                                    <a href="http://www.mvp.studio/">Senior Software Developer</a>
+                                </List.Content>
+                            </List.Item>
+                            <List.Item>
+                                <Image src={terry} size="tiny" avatar />
+                                <List.Content>
+                                    <h4><a href="https://www.linkedin.com/in/terry-w-developer/" style={{color: "white"}}>Terry Wang</a></h4>
+                                    <a href="http://www.mvp.studio/">Software Developer @ MVP Studio</a>
+                                </List.Content>
+                            </List.Item>
+                            <List.Item>
+                                <Image src={rad} size="tiny" avatar />
+                                <List.Content>
+                                    <h4><a href="https://www.linkedin.com/in/radhika-vahora-58083618/" style={{color: "white"}}>Radhika Vahora</a></h4>
+                                    <a href="http://www.mvp.studio/">Software Developer @ MVP Studio</a>
+                                </List.Content>
+                            </List.Item> 
+                            
+                        </List>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
