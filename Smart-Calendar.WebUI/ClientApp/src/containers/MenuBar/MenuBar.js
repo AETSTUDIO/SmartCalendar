@@ -190,7 +190,7 @@ class Menubar extends Component {
         return (
             <React.Fragment>
                 {!this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
-                <Menu secondary>
+                <Menu secondary stackable>
                     <Menu.Item >
                         <Header as="h1" size="large">
                             <Icon name="calendar alternate outline" />
@@ -204,7 +204,7 @@ class Menubar extends Component {
                     </Menu.Item>
                 </Menu>
 
-                <Menu inverted size="tiny" borderless>
+                <Menu inverted size="tiny" borderless stackable>
                     <Menu.Item style={{ "fontSize": "1.3em" }}>
                         Current Week: {currentWeek}
                     </Menu.Item>

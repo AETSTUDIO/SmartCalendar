@@ -16,7 +16,7 @@ class SmartCalender extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.users && this.props.accounts ? 
+                {this.props.users && this.props.accounts ?
                     <div>
                         <Menubar />
                         <Divider hidden />
@@ -28,7 +28,7 @@ class SmartCalender extends Component {
                             <StaffTable users={this.props.users} />
                         </Container>
                         <Divider hidden />
-                        <Footer /> 
+                        <Footer />
                     </div>
                     : <Loader active inline="centered" size="massive" />}
             </React.Fragment >
