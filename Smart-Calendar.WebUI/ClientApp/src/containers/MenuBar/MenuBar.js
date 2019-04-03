@@ -245,7 +245,7 @@ class Menubar extends Component {
                                 <Dropdown.Header icon="user" content={this.props.accountEmail} />
                                 <Dropdown.Divider />
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" modalSize="tiny" header="Personal Profile" category="Profile" reset={() => null}>
+                                    <ModalUI trigger="category" modalSize="tiny" header="Personal Profile" category="Profile" formvalid personalProfile={()=>null} reset={() => null}>
                                         <EditProfile />
                                     </ModalUI>
                                 </Dropdown.Item>
