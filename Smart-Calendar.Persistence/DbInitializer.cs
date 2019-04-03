@@ -17,10 +17,10 @@ namespace Smart_Calendar.Persistence
         {
             context.Database.EnsureCreated();
 
-            //if (context.Accounts.Any())
-            //{
-            //    return;
-            //}
+            if (context.Accounts.Any())
+            {
+                return;
+            }
             SeedRole(context);
             SeedDepartment(context);
             SeedPosition(context);
@@ -35,7 +35,7 @@ namespace Smart_Calendar.Persistence
         {
             var shift = new[]
             {
-                new UserShift {UserId= new Guid("43f0fdea-2b4c-4af7-8389-f442deccef73"), ShiftId = 1, Day= "Monday"},
+                new UserShift { UserId= new Guid("43f0fdea-2b4c-4af7-8389-f442deccef73"),ShiftId = 1, Day= "Monday"},
                 new UserShift { UserId= new Guid("cb20b05f-0f53-4eea-9b92-2a2ccbd7468b"),ShiftId =2, Day= "Tuesday"},
                 new UserShift { UserId= new Guid("c45d233c-a3b4-42b1-a91a-0d044a35c0f2"),ShiftId = 3, Day= "Wednesday"},
                 new UserShift { UserId= new Guid("75840aef-451c-4f0e-ae80-bcd9d7897387"),ShiftId = 1, Day= "Thursday"},
@@ -49,10 +49,10 @@ namespace Smart_Calendar.Persistence
         {
             var request = new[]
             {
-                new LeaveRequest { UserId= new Guid("43f0fdea-2b4c-4af7-8389-f442deccef73"), LeaveCategoryId= (int)LeaveTypeEunm.Sick, IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("1 Feb, 2019"), EndDate= DateTime.Parse("2 Feb, 2019")},
-                new LeaveRequest { UserId= new Guid("cb20b05f-0f53-4eea-9b92-2a2ccbd7468b"), LeaveCategoryId= (int)LeaveTypeEunm.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("4 Feb, 2019"), EndDate= DateTime.Parse("7 Feb, 2019")},
-                new LeaveRequest { UserId= new Guid("c45d233c-a3b4-42b1-a91a-0d044a35c0f2"), LeaveCategoryId= (int)LeaveTypeEunm.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("5 Feb, 2019"), EndDate= DateTime.Parse("6 Feb, 2019")},
-                new LeaveRequest { UserId= new Guid("75840aef-451c-4f0e-ae80-bcd9d7897387"), LeaveCategoryId= (int)LeaveTypeEunm.Sick,IsApproved = LeaveStatusEnum.Rejected,StartDate = DateTime.Parse("6 Feb, 2019"), EndDate= DateTime.Parse("9 Feb, 2019")},
+                new LeaveRequest { UserId= new Guid("43f0fdea-2b4c-4af7-8389-f442deccef73"), LeaveCategoryId= (int)LeaveTypeEnum.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("1 Feb, 2019"), EndDate= DateTime.Parse("2 Feb, 2019")},
+                new LeaveRequest { UserId= new Guid("cb20b05f-0f53-4eea-9b92-2a2ccbd7468b"), LeaveCategoryId= (int)LeaveTypeEnum.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("4 Feb, 2019"), EndDate= DateTime.Parse("7 Feb, 2019")},
+                new LeaveRequest { UserId= new Guid("c45d233c-a3b4-42b1-a91a-0d044a35c0f2"), LeaveCategoryId= (int)LeaveTypeEnum.Sick,IsApproved = LeaveStatusEnum.Pending,StartDate = DateTime.Parse("5 Feb, 2019"), EndDate= DateTime.Parse("6 Feb, 2019")},
+                new LeaveRequest { UserId= new Guid("75840aef-451c-4f0e-ae80-bcd9d7897387"), LeaveCategoryId= (int)LeaveTypeEnum.Sick,IsApproved = LeaveStatusEnum.Rejected,StartDate = DateTime.Parse("6 Feb, 2019"), EndDate= DateTime.Parse("9 Feb, 2019")},
             };
 
             context.LeaveRequests.AddRange(request);
@@ -61,23 +61,32 @@ namespace Smart_Calendar.Persistence
         }
         private void SeedAccount(SmartCalendarDbContext context)
         {
+            PasswordHashing(out byte[] hash, out byte[] salt, "password123");
             var accounts = new[]
             {
-                new Account { AccountId = new Guid("D03127C1-503B-4BF6-9C8D-0408A0587088"), Email = "1@gmail.com", RoleId = (int)RoleEnum.admin},
-                new Account { AccountId = new Guid("4371CEA7-3434-471E-A876-14B05838D8C1"),Email = "2@gmail.com", RoleId = (int)RoleEnum.member},
-                new Account { AccountId = new Guid("C63B76A7-7B29-4994-8F1C-29CA0E6B1549"),Email = "3@gmail.com", RoleId = (int)RoleEnum.admin},
-                new Account { AccountId = new Guid("A01E3B80-371E-4FF6-A798-38A68872F611"),Email = "4@gmail.com", RoleId = (int)RoleEnum.member},
-                new Account { AccountId = new Guid("50CCCC22-0D81-4BE4-A52F-3A41853D7F70"),Email = "5@gmail.com", RoleId = (int)RoleEnum.member},
-                new Account { AccountId = new Guid("E71CB431-2904-47A1-9E5D-7600CC5DC7F2"),Email = "6@gmail.com", RoleId = (int)RoleEnum.member},
-                new Account { AccountId = new Guid("26A7FFC4-0EA2-4645-ADAC-76FF228CC20E"),Email = "7@gmail.com", RoleId = (int)RoleEnum.member},
-                new Account { AccountId = new Guid("AC8262A4-20D1-4642-95B1-A2AEFAF65AFA"),Email = "8@gmail.com", RoleId = (int)RoleEnum.member},
-                new Account { AccountId = new Guid("60E2AFF0-3FE8-40B4-A20F-AAFD5C0CC253"),Email = "9@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("D03127C1-503B-4BF6-9C8D-0408A0587088"), PasswordHash = hash, PasswordSalt=salt , Email = "admin@gmail.com", RoleId = (int)RoleEnum.admin},
+                new Account { AccountId = new Guid("4371CEA7-3434-471E-A876-14B05838D8C1"), PasswordHash = hash, PasswordSalt=salt ,Email = "2@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("C63B76A7-7B29-4994-8F1C-29CA0E6B1549"), PasswordHash = hash, PasswordSalt=salt ,Email = "3@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("A01E3B80-371E-4FF6-A798-38A68872F611"), PasswordHash = hash, PasswordSalt=salt ,Email = "4@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("50CCCC22-0D81-4BE4-A52F-3A41853D7F70"), PasswordHash = hash, PasswordSalt=salt ,Email = "5@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("E71CB431-2904-47A1-9E5D-7600CC5DC7F2"), PasswordHash = hash, PasswordSalt=salt ,Email = "6@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("26A7FFC4-0EA2-4645-ADAC-76FF228CC20E"), PasswordHash = hash, PasswordSalt=salt ,Email = "7@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("AC8262A4-20D1-4642-95B1-A2AEFAF65AFA"), PasswordHash = hash, PasswordSalt=salt ,Email = "8@gmail.com", RoleId = (int)RoleEnum.member},
+                new Account { AccountId = new Guid("60E2AFF0-3FE8-40B4-A20F-AAFD5C0CC253"), PasswordHash = hash, PasswordSalt=salt ,Email = "9@gmail.com", RoleId = (int)RoleEnum.member},
 
             };
 
             context.Accounts.AddRange(accounts);
 
             context.SaveChanges();
+        }
+        private void PasswordHashing(out byte[] hash, out byte[] salt, string password)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                salt = hmac.Key;
+                hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
         private void SeedShift(SmartCalendarDbContext context)
         {
@@ -96,8 +105,8 @@ namespace Smart_Calendar.Persistence
         {
 
             var leave = new[] {
-                new LeaveCategory { LeaveType = LeaveTypeEunm.Sick.ToString() },
-                new LeaveCategory { LeaveType = LeaveTypeEunm.Casual.ToString() }
+                new LeaveCategory { LeaveType = LeaveTypeEnum.Sick.ToString() },
+                new LeaveCategory { LeaveType = LeaveTypeEnum.Casual.ToString() }
             };
 
             context.LeaveCategories.AddRange(leave);
@@ -122,7 +131,7 @@ namespace Smart_Calendar.Persistence
             {
                 new Position{  Name = PositionEnum.Manager.ToString() },
                 new Position{  Name = PositionEnum.Lead.ToString() },
-                new Position{Name = PositionEnum.Member.ToString() }
+                new Position{  Name = PositionEnum.Member.ToString() }
             };
 
             context.Positions.AddRange(positions);
@@ -133,9 +142,9 @@ namespace Smart_Calendar.Persistence
         {
             var department = new[]
             {
-                new Department{  Name = DepartmentEnum.It.ToString() },
+                new Department{ Name = DepartmentEnum.It.ToString() },
                 new Department{ Name = DepartmentEnum.Marketing.ToString() },
-                new Department{  Name = DepartmentEnum.Accounting.ToString() }
+                new Department{ Name = DepartmentEnum.Accounting.ToString() }
             };
 
             context.Departments.AddRange(department);

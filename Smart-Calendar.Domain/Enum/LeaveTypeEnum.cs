@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Smart_Calendar.Domain.Enum
 {
-    public enum LeaveTypeEunm
+    public enum LeaveTypeEnum
     {
         Sick =1,
         Casual

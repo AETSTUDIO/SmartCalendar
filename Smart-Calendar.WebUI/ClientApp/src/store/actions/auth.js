@@ -1,4 +1,5 @@
 ﻿import axios from "../../axios-api";
+import { toast } from 'react-toastify';
 import * as actionTypes from "./actionTypes";
 
 export const authStart = () => {
@@ -29,6 +30,14 @@ export const logout = () => {
     localStorage.removeItem("roleId");
     localStorage.removeItem("accountId");
     localStorage.removeItem("email");
+    toast.info("Successfully Logged Out!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+    });
     return {
         type: actionTypes.AUTH_LOGOUT
     };
@@ -48,6 +57,14 @@ export const auth = (email, password) => {
                 localStorage.setItem("accountId", response.data.accountId);
                 localStorage.setItem("email", email);
                 dispatch(authSuccess(response.data.jwtToken, response.data.roleId.toString(), response.data.accountId, email));
+                toast.info("Welcome!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             })
             .catch(err => {
                 dispatch(authFail(err.toString()));
