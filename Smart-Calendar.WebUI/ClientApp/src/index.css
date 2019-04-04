@@ -1,13 +1,21 @@
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
 body {
+    position: relative;
     margin: 0;
-    padding: 0;
+    padding-bottom: 0;
+    min-height: 100%;
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, "Open Sans", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: url("containers/Welcome/images/bg9.jpg") no-repeat;
+    background: url("containers/Welcome/images/background.jpg") no-repeat;
     background-size: 100%;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

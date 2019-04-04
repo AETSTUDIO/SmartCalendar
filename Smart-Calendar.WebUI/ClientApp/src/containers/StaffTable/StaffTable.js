@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import TableRow from "../../components/Table/TableRow/TableRow";
 import ModalUI from "../../components/UI/ModalUI";
 import AddUserInfo from "../../components/UserInfo/AddUserInfo/AddUserInfo";
+import Footer from "../../components/Footer/Footer";
 import { checkValidity } from "../../shared/validation";
 import axios from "../../axios-api";
 import { toast } from 'react-toastify';
@@ -219,7 +220,7 @@ class StaffTable extends Component {
     }
 
     render() {
-        
+
         const { column, data, direction } = this.state;
         let isDisplay = this.props.roleId === "1";
         const availableAccounts = this.props.accounts.filter(account => data.every(user => user.accountId !== account.accountId));
@@ -238,7 +239,7 @@ class StaffTable extends Component {
 
         let table = (
             <React.Fragment>
-                <Table sortable celled striped size="large" color="grey" >
+                <Table sortable celled striped size="large" color="grey">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell
@@ -314,7 +315,11 @@ class StaffTable extends Component {
         );
 
 
-        return <div>{table}</div>;
+        return (
+            <div>
+                {table}
+                <Footer />
+            </div>);
     }
 }
 

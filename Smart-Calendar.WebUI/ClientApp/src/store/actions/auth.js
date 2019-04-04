@@ -82,9 +82,7 @@ export const setAuthRedirectPath = path => {
 export const authCheckState = () => {
     return dispatch => {
         const token = localStorage.getItem("token");
-        if (!token) {
-            dispatch(logout());
-        } else {
+        if (token) {
             const roleId = localStorage.getItem("roleId");
             const accountId = localStorage.getItem("accountId");
             const email = localStorage.getItem("email");
