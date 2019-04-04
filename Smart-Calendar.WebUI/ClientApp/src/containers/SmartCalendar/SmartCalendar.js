@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Divider, Container, Loader, Message } from "semantic-ui-react";
 import Menubar from "../MenuBar/MenuBar";
 import StaffTable from "../StaffTable/StaffTable";
-import Footer from "../../components/Footer/Footer";
 import * as actions from "../../store/actions/index";
 
 class SmartCalender extends Component {
@@ -16,8 +15,8 @@ class SmartCalender extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.users && this.props.accounts ?
-                    <div>
+                {this.props.users && this.props.accounts ? 
+                    <div style={{height:"100vh"}}>
                         <Menubar />
                         <Divider hidden />
                         <Container>
@@ -27,8 +26,6 @@ class SmartCalender extends Component {
                             </Message>}
                             <StaffTable users={this.props.users} />
                         </Container>
-                        <Divider hidden />
-                        <Footer />
                     </div>
                     : <Loader active inline="centered" size="massive" />}
             </React.Fragment >

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Menu, Header, Icon, Form, Input, Container, Divider, Loader, Label, Message } from "semantic-ui-react";
 import ModalUI from "../../components/UI/ModalUI";
-import Footer from "../../components/Footer/Footer";
+import LandingFooter from "../../components/Footer/LandingFooter";
 import * as actions from "../../store/actions/index";
 import { checkValidity } from "../../shared/validation";
 
@@ -166,83 +166,92 @@ class Welcome extends Component {
         return (
             <React.Fragment>
                 {this.props.isAuthenticated && <Redirect to={this.props.authRedirectPath} />}
-                <Menu fluid secondary>
-                    <Menu.Item >
-                        <Header as="h1" size="large">
-                            <Icon name="calendar alternate outline" />
-                            <Header.Content>
-                                Smart Calendar
+                <div style={{ height: "100vh" }}>
+                    <Menu fluid secondary>
+                        <Menu.Item >
+                            <Header as="h1" size="large">
+                                <Icon name="calendar alternate outline" />
+                                <Header.Content>
+                                    Smart Calendar
                             </Header.Content>
-                        </Header>
-                    </Menu.Item>
+                            </Header>
+                        </Menu.Item>
 
-                    <Menu.Item position="right" style={{ fontSize: "1.3em" }}>
-                        <ModalUI trigger="category" category="Sign In"
-                            header="Sign In"
-                            signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
-                            formvalid={signInValid}
-                            showNotice={this.showNotice}
-                            reset={this.resetState}
-                            modalSize="tiny"
-                        >
-                            {signInForm}
-                        </ModalUI>
-                    </Menu.Item>
-                </Menu>
-
-                {errorMessage}
-                <Container style={{marginTop: "7em", marginBottom: "7em" }}>
-                    <Header as="h1"
-                        content="Welcome to Smart Calendar"
-                        style={{
-                            fontSize: "4em",
-                            fontWeight: "normal",
-                            marginBottom: 0,
-                            marginTop: "1em"
-                        }}
-                    />
-                    <Header as="h2"
-                        content="The Next Generation Employee Management System"
-                        style={{
-                            fontSize: "1.7em",
-                            fontWeight: "normal",
-                            marginTop: "1.5em",
-                            marginBottom: "1em"
-                        }}
-                    />
-                    {this.props.loading ?
-                        <Loader active inline="centered" size="massive" /> :
-                        <div>
-                            <ModalUI header="Create Account"
-                                category="New Account"
-                                color="blue"
-                                size="huge"
-                                modalSize="tiny"
-                                addAccount={this.addAccount}
-                                formvalid={registerValid}
-                                showNotice={this.showNotice}
-                                reset={this.resetState}
-                            >
-                                {regForm}
-                            </ModalUI>
-                            <ModalUI header="Sign In"
+                        <Menu.Item position="right" style={{ fontSize: "1.3em" }}>
+                            <ModalUI trigger="category" category="Sign In"
+                                header="Sign In"
                                 signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
                                 formvalid={signInValid}
                                 showNotice={this.showNotice}
                                 reset={this.resetState}
-                                category="Existing User"
-                                size="huge"
                                 modalSize="tiny"
-                                color="black"
-                                basic
                             >
                                 {signInForm}
                             </ModalUI>
-                        </div>
-                    }
-                </Container>
-                <Divider hidden />
-                <Footer />
+                        </Menu.Item>
+                    </Menu>
+
+                    {errorMessage}
+                    <Container style={{
+                        //position: "absolute",
+                        //top: "30%",
+                        //left: "50%",
+                        //marginRight: "-50%",
+                        //transform: "translate(-50%, -50%)"
+                    }}
+                    >
+                        <Header as="h1"
+                            content="Welcome to Smart Calendar"
+                            style={{
+                                fontSize: "4em",
+                                fontWeight: "normal",
+                                marginBottom: 0,
+                                marginTop: "1em"
+                            }}
+                        />
+                        <Header as="h2"
+                            content="The Next Generation Employee Management System"
+                            style={{
+                                fontSize: "1.7em",
+                                fontWeight: "normal",
+                                marginTop: "1.5em",
+                                marginBottom: "1em"
+                            }}
+                        />
+                        {this.props.loading ?
+                            <Loader active inline="centered" size="massive" /> :
+                            <div>
+                                <ModalUI header="Create Account"
+                                    category="New Account"
+                                    color="blue"
+                                    size="huge"
+                                    modalSize="tiny"
+                                    addAccount={this.addAccount}
+                                    formvalid={registerValid}
+                                    showNotice={this.showNotice}
+                                    reset={this.resetState}
+                                >
+                                    {regForm}
+                                </ModalUI>
+                                <ModalUI header="Sign In"
+                                    signin={() => this.props.onAuth(this.state.email.value.toLowerCase(), this.state.password.value)}
+                                    formvalid={signInValid}
+                                    showNotice={this.showNotice}
+                                    reset={this.resetState}
+                                    category="Existing User"
+                                    size="huge"
+                                    modalSize="tiny"
+                                    color="black"
+                                    basic
+                                >
+                                    {signInForm}
+                                </ModalUI>
+                            </div>
+                        }
+                    </Container>
+                    <Divider hidden />
+                    <LandingFooter />
+                </div>
             </React.Fragment>
         );
     }

@@ -22,6 +22,8 @@ class ModalUI extends Component {
                     return this.props.addAccount();
                 case "Account Settings":
                     return this.props.accountSettings();
+                case "Personal Profile":
+                    return this.props.personalProfile();
                 case "Delete Leave Record":
                     return this.props.deleteLeaveInfo();
                 case "Apply Leave":

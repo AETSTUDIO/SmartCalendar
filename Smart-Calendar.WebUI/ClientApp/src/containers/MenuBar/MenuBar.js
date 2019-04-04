@@ -13,7 +13,6 @@ import * as actions from "../../store/actions/index";
 import { checkValidity } from "../../shared/validation";
 import axios from "../../axios-api";
 
-
 class Menubar extends Component {
     state = {
         email: {
@@ -246,7 +245,7 @@ class Menubar extends Component {
                                 <Dropdown.Header icon="user" content={this.props.accountEmail} />
                                 <Dropdown.Divider />
                                 <Dropdown.Item>
-                                    <ModalUI trigger="category" modalSize="tiny" header="Personal Profile" category="Profile" reset={() => null}>
+                                    <ModalUI trigger="category" modalSize="tiny" header="Personal Profile" category="Profile" formvalid personalProfile={()=>null} reset={() => null}>
                                         <EditProfile />
                                     </ModalUI>
                                 </Dropdown.Item>
