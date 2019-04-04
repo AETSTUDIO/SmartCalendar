@@ -59,7 +59,7 @@ const Footer = () => (
                 </Grid.Row>
                 <Grid.Row style={{ color: "white" }}>
                     <Grid.Column width={16} >
-                        Copyright © 2019 Smart Team. All rights reserved.
+                        Copyright Â© 2019 Smart Team. All rights reserved.
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
