@@ -1,9 +1,5 @@
 import React from "react";
-import { Container, Grid, Segment, List, Header, Image } from "semantic-ui-react";
-import terry from "../../shared/Terry Wang.jpg";
-import rad from "../../shared/Radhika.jpg";
-import dan from "../../shared/Daniel.jpg";
-
+import { Container, Grid, Segment, List, Header } from "semantic-ui-react";
 
 const Footer = () => (
     <Segment vertical style={{
