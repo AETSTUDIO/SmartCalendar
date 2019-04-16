@@ -43,8 +43,9 @@ namespace Smart_Calendar.WebUI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["appToken"])),
                     RequireSignedTokens = true,
                     ValidateLifetime = true,
-                    ValidateIssuer = false,
-                    ValidIssuer = "http://ec2-54-206-113-108.ap-southeast-2.compute.amazonaws.com",
+                    ValidateIssuer = true,
+                    ValidIssuer = "http://localhost:44314/",
+                    ValidateAudience = false,
                     SaveSigninToken = true
                 };
             });

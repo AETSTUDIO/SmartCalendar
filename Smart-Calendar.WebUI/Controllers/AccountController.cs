@@ -23,7 +23,6 @@ namespace Smart_Calendar.WebUI.Controllers
             _accountRepo = accountRepo;
         }
         [HttpPost("login")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Login([FromBody]LoginDto credential)
         {
             var result = await _IdentityService.LoginAsync(credential);

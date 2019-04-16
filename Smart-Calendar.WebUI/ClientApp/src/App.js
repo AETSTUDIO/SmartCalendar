@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 
 class App extends Component {
     componentDidMount() {
-        //this.props.onTryAutoSignin();
+        this.props.onTryAutoSignin();
     }
 
     render() {
