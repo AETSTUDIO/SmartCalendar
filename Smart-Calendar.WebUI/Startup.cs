@@ -43,12 +43,12 @@ namespace Smart_Calendar.WebUI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["appToken"])),
                     RequireSignedTokens = true,
                     ValidateLifetime = true,
-                    ValidateIssuer = true,
-                    ValidIssuer = "http://localhost:44314/",
-                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidIssuer = "http://ec2-54-206-113-108.ap-southeast-2.compute.amazonaws.com",
                     SaveSigninToken = true
                 };
             });
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
