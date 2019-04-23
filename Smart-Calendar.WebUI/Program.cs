@@ -13,21 +13,6 @@ namespace Smart_Calendar.WebUI
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    try
-            //    {
-            //        var context = scope.ServiceProvider.GetService<SmartCalendarDbContext>();
-            //        context.Database.Migrate();
-            //        DbInitializer.Initialize(context);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-            //        logger.LogError(e, "An error occurred while migrating or initializing the database.");
-            //    }
-            //}
-            //host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
