@@ -61,7 +61,7 @@ namespace Smart_Calendar.Persistence
         }
         private void SeedAccount(SmartCalendarDbContext context)
         {
-            PasswordHashing(out byte[] hash, out byte[] salt, "password123");
+            PasswordHashing(out byte[] hash, out byte[] salt, "password");
             var accounts = new[]
             {
                 new Account { AccountId = new Guid("D03127C1-503B-4BF6-9C8D-0408A0587088"), PasswordHash = hash, PasswordSalt=salt , Email = "admin@gmail.com", RoleId = (int)RoleEnum.admin},
